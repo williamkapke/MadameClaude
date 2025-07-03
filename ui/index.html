@@ -32,6 +32,9 @@
         background: #1e293b;
         border-bottom: 1px solid #334155;
         padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       h1 {
@@ -40,6 +43,21 @@
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
+      }
+
+      .settings-btn {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 6px;
+        transition: all 0.2s;
+      }
+
+      .settings-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #e2e8f0;
       }
 
       /* Main Content */
@@ -406,12 +424,144 @@
       .events-list::-webkit-scrollbar-thumb:hover {
         background: #64748b;
       }
+
+      /* Modal Styles */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+      }
+
+      .modal {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 24px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+      }
+
+      .modal-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #e2e8f0;
+      }
+
+      .modal-close {
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+      }
+
+      .modal-close:hover {
+        color: #e2e8f0;
+      }
+
+      .volume-control {
+        margin-bottom: 20px;
+      }
+
+      .volume-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        color: #e2e8f0;
+      }
+
+      .volume-value {
+        font-size: 12px;
+        color: #94a3b8;
+        font-family: "SF Mono", Monaco, monospace;
+      }
+
+      .volume-slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #334155;
+        outline: none;
+        -webkit-appearance: none;
+        appearance: none;
+      }
+
+      .volume-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #667eea;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .volume-slider::-webkit-slider-thumb:hover {
+        background: #7c8ff0;
+        transform: scale(1.2);
+      }
+
+      .volume-slider::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #667eea;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+      }
+
+      .volume-slider::-moz-range-thumb:hover {
+        background: #7c8ff0;
+        transform: scale(1.2);
+      }
+
+      .mute-checkbox {
+        display: flex;
+        align-items: center;
+        margin-top: 4px;
+        font-size: 12px;
+        color: #94a3b8;
+      }
+
+      .mute-checkbox input {
+        margin-right: 8px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
         <h1>Claudia</h1>
+        <button class="settings-btn" onclick="openSettings()" title="Settings">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+          </svg>
+        </button>
       </header>
 
       <div class="main-content">
@@ -554,6 +704,46 @@
       </div>
     </div>
 
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Sound Settings</h3>
+          <button class="modal-close" onclick="closeSettings()">×</button>
+        </div>
+        
+        <div class="volume-control">
+          <div class="volume-label">
+            <span>Notification Sound</span>
+            <span class="volume-value" id="notification-volume-value">50%</span>
+          </div>
+          <input type="range" class="volume-slider" id="notification-volume" 
+                 min="0" max="100" value="50" 
+                 oninput="updateVolume('notification', this.value)">
+          <label class="mute-checkbox">
+            <input type="checkbox" id="notification-mute" 
+                   onchange="toggleMute('notification', this.checked)">
+            Mute notification sounds
+          </label>
+        </div>
+        
+        <div class="volume-control">
+          <div class="volume-label">
+            <span>Stop Sound</span>
+            <span class="volume-value" id="stop-volume-value">50%</span>
+          </div>
+          <input type="range" class="volume-slider" id="stop-volume" 
+                 min="0" max="100" value="50" 
+                 oninput="updateVolume('stop', this.value)">
+          <label class="mute-checkbox">
+            <input type="checkbox" id="stop-mute" 
+                   onchange="toggleMute('stop', this.checked)">
+            Mute stop sounds
+          </label>
+        </div>
+      </div>
+    </div>
+
     <script>
       let ws = null;
       let events = [];
@@ -569,6 +759,39 @@
         },
       };
       let expandedRowId = null;
+      
+      // Sound settings
+      let soundSettings = {
+        notification: {
+          volume: 0.5,
+          muted: false
+        },
+        stop: {
+          volume: 0.5,
+          muted: false
+        }
+      };
+      
+      // Load settings from localStorage
+      function loadSettings() {
+        const saved = localStorage.getItem('claudia-sound-settings');
+        if (saved) {
+          soundSettings = JSON.parse(saved);
+          // Update UI
+          document.getElementById('notification-volume').value = soundSettings.notification.volume * 100;
+          document.getElementById('notification-volume-value').textContent = Math.round(soundSettings.notification.volume * 100) + '%';
+          document.getElementById('notification-mute').checked = soundSettings.notification.muted;
+          
+          document.getElementById('stop-volume').value = soundSettings.stop.volume * 100;
+          document.getElementById('stop-volume-value').textContent = Math.round(soundSettings.stop.volume * 100) + '%';
+          document.getElementById('stop-mute').checked = soundSettings.stop.muted;
+        }
+      }
+      
+      // Save settings to localStorage
+      function saveSettings() {
+        localStorage.setItem('claudia-sound-settings', JSON.stringify(soundSettings));
+      }
 
       function connectWebSocket() {
         try {
@@ -602,6 +825,64 @@
         }
       }
 
+      // Sound effect functions
+      function playNotificationSound() {
+        if (soundSettings.notification.muted) return;
+        
+        const audio = new Audio('notification.mp3');
+        audio.volume = soundSettings.notification.volume;
+        audio.play().catch((err) => {
+          console.warn('Could not play notification sound:', err);
+        });
+      }
+
+      function playStopSound() {
+        if (soundSettings.stop.muted) return;
+        
+        const audio = new Audio('stop.mp3');
+        audio.volume = soundSettings.stop.volume;
+        audio.play().catch((err) => {
+          console.warn('Could not play stop sound:', err);
+        });
+      }
+      
+      // Settings modal functions
+      let volumeDebounceTimer = null;
+      
+      function openSettings() {
+        document.getElementById('settings-modal').classList.add('active');
+      }
+      
+      function closeSettings() {
+        document.getElementById('settings-modal').classList.remove('active');
+      }
+      
+      function updateVolume(type, value) {
+        soundSettings[type].volume = value / 100;
+        document.getElementById(`${type}-volume-value`).textContent = value + '%';
+        saveSettings();
+        
+        // Clear existing timer
+        if (volumeDebounceTimer) {
+          clearTimeout(volumeDebounceTimer);
+        }
+        
+        // Set new timer to play sound after user stops adjusting
+        volumeDebounceTimer = setTimeout(() => {
+          // Play a preview sound
+          if (type === 'notification') {
+            playNotificationSound();
+          } else {
+            playStopSound();
+          }
+        }, 300); // Wait 300ms after last change
+      }
+      
+      function toggleMute(type, muted) {
+        soundSettings[type].muted = muted;
+        saveSettings();
+      }
+
       function addEvent(data) {
         const event = {
           id: Date.now() + Math.random(),
@@ -627,6 +908,13 @@
           "en-US",
           { hour12: false },
         );
+
+        // Play sounds for specific event types
+        if (eventType === "Notification") {
+          playNotificationSound();
+        } else if (eventType === "Stop") {
+          playStopSound();
+        }
 
         // Get details based on event type
         let details = "";
@@ -790,6 +1078,16 @@
 
       // Connect on load
       connectWebSocket();
+      
+      // Load settings on page load
+      loadSettings();
+      
+      // Close modal when clicking outside
+      document.getElementById('settings-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'settings-modal') {
+          closeSettings();
+        }
+      });
     </script>
   </body>
 </html>

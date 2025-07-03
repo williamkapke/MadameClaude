@@ -78,7 +78,7 @@ async function handleRequest(request: Request): Promise<Response> {
             `${color}${hookEventName}${resetColor}`;
         }
         console.log(`${data.timestamp} ${JSON.stringify(messagePayload)}`);
-      } catch (e) {
+      } catch (_e) {
         console.log(`${data.timestamp} ${data.message}`);
       }
 

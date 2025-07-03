@@ -133,18 +133,74 @@ async function handleRequest(request: Request): Promise<Response> {
     });
   }
 
-  // Serve UI index.html for GET requests to root
-  if (request.method === "GET" && url.pathname === "/") {
+  // Serve UI files for GET requests
+  if (request.method === "GET") {
     try {
-      const uiPath = new URL("../ui/index.html", import.meta.url).pathname;
-      const html = await Deno.readTextFile(uiPath);
-      return new Response(html, {
-        status: 200,
-        headers: { "Content-Type": "text/html" },
-      });
+      // Default to index.html for root path
+      const filePath = url.pathname === "/" ? "/index.html" : url.pathname;
+      const uiPath = new URL(`../ui${filePath}`, import.meta.url).pathname;
+      
+      // Determine content type based on file extension
+      const ext = filePath.split('.').pop()?.toLowerCase();
+      const contentTypes: Record<string, string> = {
+        "html": "text/html",
+        "js": "application/javascript",
+        "css": "text/css",
+        "mp3": "audio/mpeg",
+        "wav": "audio/wav",
+        "png": "image/png",
+        "jpg": "image/jpeg",
+        "jpeg": "image/jpeg",
+        "svg": "image/svg+xml",
+      };
+      const contentType = contentTypes[ext || "html"] || "application/octet-stream";
+      
+      // Set cache headers based on file type
+      const headers: Record<string, string> = {
+        "Content-Type": contentType,
+      };
+      
+      // Add cache headers for static assets
+      if (ext === "mp3" || ext === "wav" || ext === "png" || ext === "jpg" || ext === "jpeg" || ext === "svg") {
+        // Cache media files for 1 day
+        headers["Cache-Control"] = "public, max-age=86400";
+      } else if (ext === "css" || ext === "js") {
+        // Cache CSS/JS for 1 hour (in case of updates)
+        headers["Cache-Control"] = "public, max-age=3600";
+      } else if (ext === "html" || !ext) {
+        // Don't cache HTML to ensure updates are seen
+        headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+      }
+      
+      // Read and serve the file
+      if (ext === "mp3" || ext === "wav" || ext === "png" || ext === "jpg" || ext === "jpeg") {
+        // Binary files
+        const data = await Deno.readFile(uiPath);
+        return new Response(data, {
+          status: 200,
+          headers,
+        });
+      } else {
+        // Text files
+        const content = await Deno.readTextFile(uiPath);
+        return new Response(content, {
+          status: 200,
+          headers,
+        });
+      }
     } catch (error) {
-      console.error("Failed to serve UI:", error);
-      return new Response("UI not found", { status: 404 });
+      // Only log errors for files that aren't known browser/tool requests
+      const knownMissingFiles = [
+        '.well-known/appspecific/com.chrome.devtools.json',
+        'favicon.ico',
+        'robots.txt'
+      ];
+      
+      if (!knownMissingFiles.some(file => url.pathname.includes(file))) {
+        console.error("Failed to serve file:", error);
+      }
+      
+      return new Response("File not found", { status: 404 });
     }
   }
 
