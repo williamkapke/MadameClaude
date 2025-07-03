@@ -1,6 +1,7 @@
 # Claude Code Hooks Integration Guide
 
-This guide explains how to integrate the stdio2http app with Claude Code hooks to stream events to the monitoring server.
+This guide explains how to integrate the stdio2http app with Claude Code hooks
+to stream events to the monitoring server.
 
 ## Prerequisites
 
@@ -16,7 +17,8 @@ This guide explains how to integrate the stdio2http app with Claude Code hooks t
 
 ### 1. Configure Claude Code Settings
 
-Add hooks configuration to your Claude Code settings file (`~/.claude/settings.json`):
+Add hooks configuration to your Claude Code settings file
+(`~/.claude/settings.json`):
 
 ```json
 {
@@ -69,6 +71,7 @@ Use matcher patterns to filter which tools trigger hooks:
 ```
 
 Common matcher patterns:
+
 - `"Bash"` - Only Bash commands
 - `"Write"` - Only Write operations
 - `"Edit|MultiEdit"` - Edit operations (regex)
@@ -106,19 +109,23 @@ When Claude Code executes a hook, it pipes JSON data to stdin:
 
 ### 6. Monitoring Output
 
-The server will log all received messages to the console. Future UI development will display these in a web interface.
+The server will log all received messages to the console. Future UI development
+will display these in a web interface.
 
 ## Important Notes
 
 1. **Absolute Paths**: Always use absolute paths in hooks configuration
 2. **Permissions**: Ensure the hook script has execute permissions
-3. **Error Handling**: stdio2http always exits with code 0 to prevent blocking Claude Code
+3. **Error Handling**: stdio2http always exits with code 0 to prevent blocking
+   Claude Code
 4. **Performance**: Hooks run synchronously, so keep processing minimal
 
 ## Example Use Cases
 
 ### Development Monitoring
+
 Track all file changes during a coding session:
+
 ```json
 {
   "hooks": {
@@ -138,7 +145,9 @@ Track all file changes during a coding session:
 ```
 
 ### Command Auditing
+
 Log all executed commands:
+
 ```json
 {
   "hooks": {
@@ -158,7 +167,9 @@ Log all executed commands:
 ```
 
 ### Agent Activity Tracking
+
 Monitor when agents complete tasks:
+
 ```json
 {
   "hooks": {
@@ -179,7 +190,8 @@ Monitor when agents complete tasks:
 
 ## Troubleshooting
 
-1. **Hook not firing**: Check matcher pattern and ensure settings.json is valid JSON
+1. **Hook not firing**: Check matcher pattern and ensure settings.json is valid
+   JSON
 2. **Server not receiving**: Verify server is running on port 4519
 3. **Permission errors**: Ensure Deno has network permissions
 4. **Path issues**: Use absolute paths, expand $HOME manually

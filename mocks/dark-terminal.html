@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Claudia - Claude Code Hook Monitor</title>
     <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>Claudia - Hook Monitor</h1>
-            <div class="connection-status">
-                <span class="status-indicator disconnected"></span>
-                <span class="status-text">Disconnected</span>
-            </div>
-        </header>
-
-        <div class="filters">
-            <h2>Filter by Event Type</h2>
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">
-                    All Events
-                    <span class="count" id="count-all">0</span>
-                </button>
-                <button class="filter-btn" data-filter="PreToolUse">
-                    PreToolUse
-                    <span class="count" id="count-PreToolUse">0</span>
-                </button>
-                <button class="filter-btn" data-filter="PostToolUse">
-                    PostToolUse
-                    <span class="count" id="count-PostToolUse">0</span>
-                </button>
-                <button class="filter-btn" data-filter="Notification">
-                    Notification
-                    <span class="count" id="count-Notification">0</span>
-                </button>
-                <button class="filter-btn" data-filter="Stop">
-                    Stop
-                    <span class="count" id="count-Stop">0</span>
-                </button>
-                <button class="filter-btn" data-filter="SubagentStop">
-                    SubagentStop
-                    <span class="count" id="count-SubagentStop">0</span>
-                </button>
-            </div>
-            <button class="clear-btn" onclick="clearMessages()">Clear All</button>
+      <header>
+        <h1>Claudia - Hook Monitor</h1>
+        <div class="connection-status">
+          <span class="status-indicator disconnected"></span>
+          <span class="status-text">Disconnected</span>
         </div>
+      </header>
 
-        <div class="messages-container">
-            <div id="messages" class="messages-list">
-                <!-- Messages will be dynamically inserted here -->
-            </div>
+      <div class="filters">
+        <h2>Filter by Event Type</h2>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">
+            All Events
+            <span class="count" id="count-all">0</span>
+          </button>
+          <button class="filter-btn" data-filter="PreToolUse">
+            PreToolUse
+            <span class="count" id="count-PreToolUse">0</span>
+          </button>
+          <button class="filter-btn" data-filter="PostToolUse">
+            PostToolUse
+            <span class="count" id="count-PostToolUse">0</span>
+          </button>
+          <button class="filter-btn" data-filter="Notification">
+            Notification
+            <span class="count" id="count-Notification">0</span>
+          </button>
+          <button class="filter-btn" data-filter="Stop">
+            Stop
+            <span class="count" id="count-Stop">0</span>
+          </button>
+          <button class="filter-btn" data-filter="SubagentStop">
+            SubagentStop
+            <span class="count" id="count-SubagentStop">0</span>
+          </button>
         </div>
+        <button class="clear-btn" onclick="clearMessages()">Clear All</button>
+      </div>
+
+      <div class="messages-container">
+        <div id="messages" class="messages-list">
+          <!-- Messages will be dynamically inserted here -->
+        </div>
+      </div>
     </div>
 
     <script src="app.js"></script>
     <script src="sample-data.js"></script>
-</body>
+  </body>
 </html>

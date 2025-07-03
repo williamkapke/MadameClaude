@@ -6,13 +6,13 @@ async function readStdio(): Promise<string> {
   const decoder = new TextDecoder();
   const buffer = new Uint8Array(4096);
   let input = "";
-  
+
   while (true) {
     const n = await Deno.stdin.read(buffer);
     if (n === null) break;
     input += decoder.decode(buffer.slice(0, n));
   }
-  
+
   return input.trim();
 }
 
@@ -28,12 +28,12 @@ async function postToServer(data: string, serverUrl: string): Promise<boolean> {
         timestamp: new Date().toISOString(),
       }),
     });
-    
+
     if (!response.ok) {
       console.error(`HTTP error: ${response.status} ${response.statusText}`);
       return false;
     }
-    
+
     return true;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
@@ -44,23 +44,23 @@ async function postToServer(data: string, serverUrl: string): Promise<boolean> {
 
 async function main() {
   const serverUrl = Deno.args[0] || DEFAULT_SERVER_URL;
-  
+
   try {
     const input = await readStdio();
-    
+
     if (input.length === 0) {
       console.log("No input received from stdio");
       Deno.exit(0);
     }
-    
+
     const success = await postToServer(input, serverUrl);
-    
+
     if (success) {
       console.log("Message posted successfully");
     } else {
       console.log("Failed to post message, but continuing...");
     }
-    
+
     // Always exit with 0 to not block hook processing
     Deno.exit(0);
   } catch (error) {

@@ -3,12 +3,12 @@
 const PORT = 4519;
 
 const hookColors: Record<string, string> = {
-          "SubagentStop": "\x1b[35m", // Purple
-          "PreToolUse": "\x1b[34m",   // Blue
-          "Notification": "\x1b[33m", // Orange/Yellow
-          "PostToolUse": "\x1b[32m",  // Green
-          "Stop": "\x1b[31m"          // Red
-        };
+  "SubagentStop": "\x1b[35m", // Purple
+  "PreToolUse": "\x1b[34m", // Blue
+  "Notification": "\x1b[33m", // Orange/Yellow
+  "PostToolUse": "\x1b[32m", // Green
+  "Stop": "\x1b[31m", // Red
+};
 
 interface Message {
   message: string;
@@ -74,7 +74,8 @@ async function handleRequest(request: Request): Promise<Response> {
           const hookEventName = messagePayload.hook_event_name;
           const color = hookColors[hookEventName] || "";
           const resetColor = "\x1b[0m";
-          messagePayload.hook_event_name = `${color}${hookEventName}${resetColor}`;
+          messagePayload.hook_event_name =
+            `${color}${hookEventName}${resetColor}`;
         }
         console.log(`${data.timestamp} ${JSON.stringify(messagePayload)}`);
       } catch (e) {

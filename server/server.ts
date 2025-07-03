@@ -63,42 +63,46 @@ async function handleRequest(request: Request): Promise<Response> {
       try {
         const messageObj = JSON.parse(data.message);
         const hookEventName = messageObj.hook_event_name;
-        
+
         // Define colors for each hook type (matching the image)
         const hookColors: Record<string, string> = {
           "SubagentStop": "\x1b[35m", // Purple
-          "PreToolUse": "\x1b[34m",   // Blue
+          "PreToolUse": "\x1b[34m", // Blue
           "Notification": "\x1b[33m", // Orange/Yellow
-          "PostToolUse": "\x1b[32m",  // Green
-          "Stop": "\x1b[31m"          // Red
+          "PostToolUse": "\x1b[32m", // Green
+          "Stop": "\x1b[31m", // Red
         };
-        
+
         const color = hookColors[hookEventName] || "\x1b[0m";
         const reset = "\x1b[0m";
-        
+
         // Replace the hook_event_name value with colored version in the JSON string
         let coloredMessage = data.message.replace(
           `"hook_event_name":"${hookEventName}"`,
-          `"hook_event_name":"${color}${hookEventName}${reset}"`
+          `"hook_event_name":"${color}${hookEventName}${reset}"`,
         );
-        
+
         // If there's a tool_name, colorize it too
         if (messageObj.tool_name) {
           const toolColor = "\x1b[36m"; // Cyan for tool names
           coloredMessage = coloredMessage.replace(
             `"tool_name":"${messageObj.tool_name}"`,
-            `"tool_name":"${toolColor}${messageObj.tool_name}${reset}"`
+            `"tool_name":"${toolColor}${messageObj.tool_name}${reset}"`,
           );
         }
-        
+
         // Add color to timestamp (using dim/gray color)
         const timestampColor = "\x1b[90m"; // Gray/dim
-        console.log(`${timestampColor}${data.timestamp}${reset} ${coloredMessage}`);
+        console.log(
+          `${timestampColor}${data.timestamp}${reset} ${coloredMessage}`,
+        );
       } catch (_parseError) {
         // If message is not valid JSON, log as is
         const timestampColor = "\x1b[90m"; // Gray/dim
         const reset = "\x1b[0m";
-        console.log(`${timestampColor}${data.timestamp}${reset} ${data.message}`);
+        console.log(
+          `${timestampColor}${data.timestamp}${reset} ${data.message}`,
+        );
       }
 
       // Broadcast to WebSocket clients

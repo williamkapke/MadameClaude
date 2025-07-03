@@ -1,23 +1,28 @@
 # Development Checklist
 
 ## Project Overview
-Build a three-component system for streaming stdio messages via HTTP to a web UI.
+
+Build a three-component system for streaming stdio messages via HTTP to a web
+UI.
 
 ## Development Steps
 
 ### Phase 1: stdio2http App
+
 - [x] P1-01 Create `/stdio2http` directory structure
 - [x] P1-02 Initialize Deno project with `deno.json`
 - [x] P1-03 Create main application file (`main.ts`)
 - [x] P1-04 Implement stdio input reading functionality
 - [x] P1-05 Implement HTTP POST functionality to localhost server
 - [x] P1-06 The server will run on `localhost:4519`
-- [x] P1-07 Add error handling and logging. Failures to POST MUST NOT stop the hook processing.
+- [x] P1-07 Add error handling and logging. Failures to POST MUST NOT stop the
+      hook processing.
 - [x] P1-08 Create unit tests for core functionality
 - [x] P1-09 Test stdio input and HTTP POST integration
 - [x] P1-10 Verify app starts, processes input, posts data, and exits
 
 ### Phase 2: Server App
+
 - [x] P2-01 Create `/server` directory structure
 - [x] P2-02 Initialize Deno project with `deno.json`
 - [x] P2-03 Create main server file (`server.ts`)
@@ -30,6 +35,7 @@ Build a three-component system for streaming stdio messages via HTTP to a web UI
 - [x] P2-10 Verify server can handle multiple concurrent connections
 
 ### Phase 3: UI App
+
 - [x] P3-01 Create `/ui` directory structure
 - [x] P3-02 Create simple HTML single page (`index.html`)
 - [x] P3-03 Add WebSocket client JavaScript functionality
@@ -39,6 +45,7 @@ Build a three-component system for streaming stdio messages via HTTP to a web UI
 - [x] P3-07 Verify UI updates in real-time with incoming messages
 
 ### Phase 4: Documentation & Integration
+
 - [ ] P4-01 Create root `README.md`
 - [ ] P4-02 Add project description and architecture overview
 - [ ] P4-03 Create mermaid diagrams for system flow
@@ -48,12 +55,14 @@ Build a three-component system for streaming stdio messages via HTTP to a web UI
 - [ ] P4-07 Final testing of complete system integration
 
 ## Testing Strategy
+
 - Unit tests for each component
 - Integration tests for data flow
 - Manual testing of complete workflow
 - Error handling verification
 
 ## Success Criteria
+
 - stdio2http successfully reads stdin and posts to server
 - Server receives posts and streams via WebSocket
 - UI displays messages in real-time

@@ -1,14 +1,19 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with
+code in this repository.
 
 ## Project Overview
 
-Claudia is a monitoring system for Claude Code hooks that captures and streams tool usage events to a web interface. It consists of three Deno-based components that work together to provide real-time visibility into Claude Code's tool usage.
+Claudia is a monitoring system for Claude Code hooks that captures and streams
+tool usage events to a web interface. It consists of three Deno-based components
+that work together to provide real-time visibility into Claude Code's tool
+usage.
 
 ## Architecture
 
 The system follows an event-driven architecture with this flow:
+
 ```
 Claude Code → Hooks → stdio2http → HTTP POST → Server → WebSocket → UI (planned)
 ```
@@ -30,6 +35,7 @@ Claude Code → Hooks → stdio2http → HTTP POST → Server → WebSocket → 
 ## Development Commands
 
 ### stdio2http
+
 ```bash
 cd stdio2http
 deno task start      # Run the app
@@ -39,6 +45,7 @@ deno task lint       # Lint code
 ```
 
 ### server
+
 ```bash
 cd server
 deno task start      # Run the server
@@ -50,7 +57,8 @@ deno task lint       # Lint code
 
 ## Integration with Claude Code
 
-This project integrates via Claude Code's hooks system. Users configure hooks in `~/.claude/settings.json`:
+This project integrates via Claude Code's hooks system. Users configure hooks in
+`~/.claude/settings.json`:
 
 ```json
 {
@@ -66,7 +74,8 @@ Hook types: PreToolUse, PostToolUse, Notification, Stop, SubagentStop
 
 ## Key Implementation Notes
 
-- **Error Handling**: Never let errors block Claude Code. stdio2http always exits with code 0.
+- **Error Handling**: Never let errors block Claude Code. stdio2http always
+  exits with code 0.
 - **Message Format**: All messages include timestamps and are wrapped in JSON
 - **Port**: Server uses port 4519 for both HTTP and WebSocket
 - **Testing**: Use `deno task test` in each component directory

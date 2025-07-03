@@ -1,12 +1,15 @@
 import { assertEquals } from "https://deno.land/std@0.208.0/assert/mod.ts";
-import { stub, restore } from "https://deno.land/std@0.208.0/testing/mock.ts";
+import { restore, stub } from "https://deno.land/std@0.208.0/testing/mock.ts";
 
 // Mock the main module functions for testing
 const mockReadStdio = (input: string): Promise<string> => {
   return Promise.resolve(input);
 };
 
-const mockPostToServer = (_data: string, serverUrl: string): Promise<boolean> => {
+const mockPostToServer = (
+  _data: string,
+  serverUrl: string,
+): Promise<boolean> => {
   // Mock successful POST
   if (serverUrl.includes("success")) {
     return Promise.resolve(true);
@@ -27,12 +30,18 @@ Deno.test("readStdio should handle text input", async () => {
 });
 
 Deno.test("postToServer should succeed with valid server", async () => {
-  const result = await mockPostToServer("test message", "http://localhost:4519/success");
+  const result = await mockPostToServer(
+    "test message",
+    "http://localhost:4519/success",
+  );
   assertEquals(result, true);
 });
 
 Deno.test("postToServer should fail gracefully with invalid server", async () => {
-  const result = await mockPostToServer("test message", "http://localhost:4519/fail");
+  const result = await mockPostToServer(
+    "test message",
+    "http://localhost:4519/fail",
+  );
   assertEquals(result, false);
 });
 
@@ -54,11 +63,11 @@ Deno.test("postToServer should handle network errors", async () => {
 Deno.test("main should exit with code 0 on success", async () => {
   const exitStub = stub(Deno, "exit");
   const _consoleStub = stub(console, "log");
-  
+
   try {
     // Mock successful scenario - just import the module
     await import("./main.ts");
-    
+
     // This test is challenging since we can't easily mock stdin
     // We'll test the exit behavior indirectly
     assertEquals(exitStub.calls.length >= 0, true);
@@ -70,12 +79,12 @@ Deno.test("main should exit with code 0 on success", async () => {
 Deno.test("JSON payload structure", () => {
   const testData = "test message";
   const timestamp = new Date().toISOString();
-  
+
   const payload = {
     message: testData,
     timestamp: timestamp,
   };
-  
+
   assertEquals(payload.message, testData);
   assertEquals(typeof payload.timestamp, "string");
   assertEquals(payload.timestamp.includes("T"), true); // ISO format check
