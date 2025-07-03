@@ -550,6 +550,8 @@ h1 {
             if (eventData.tool_input) {
                 if (eventData.tool_input.description) {
                     details = eventData.tool_input.description;
+                } else if (eventData.tool_input.url) {
+                    details = eventData.tool_input.url;
                 } else if (eventData.tool_input.file_path) {
                     details = eventData.tool_input.file_path;
                 } else if (eventData.tool_input.command) {
