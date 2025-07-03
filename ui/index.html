@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claudia - Compact List View</title>
+    <style>
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #0f172a;
+    color: #e2e8f0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+header {
+    background: #1e293b;
+    border-bottom: 1px solid #334155;
+    padding: 10px 20px;
+}
+
+h1 {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Header Filter Input */
+.header-filter {
+    width: 100%;
+    padding: 2px 6px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: #e2e8f0;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.2s;
+}
+
+.header-filter:focus {
+    outline: none;
+    border-bottom-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.header-filter::placeholder {
+    color: #94a3b8;
+}
+
+/* Type Dropdown */
+.type-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    height: 100%;
+}
+
+.dropdown-toggle:hover {
+    color: #e2e8f0;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 6px;
+    padding: 8px;
+    min-width: 180px;
+    z-index: 1000;
+    margin-top: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 8px;
+    cursor: pointer;
+    transition: background 0.1s;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #cbd5e1;
+}
+
+.dropdown-item:hover {
+    background: #334155;
+}
+
+.dropdown-item span {
+    flex: 1;
+}
+
+/* Toggle Switch Styles */
+.toggle-switch {
+    appearance: none;
+    width: 36px;
+    height: 20px;
+    background: #334155;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.toggle-switch:checked {
+    background: #3b82f6;
+}
+
+.toggle-switch::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.2s;
+}
+
+.toggle-switch:checked::before {
+    transform: translateX(16px);
+}
+
+.dropdown-separator {
+    height: 1px;
+    background: #334155;
+    margin: 4px 0;
+}
+
+/* Events Container */
+.events-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #0f172a;
+    width: 100%;
+}
+
+.events-header {
+    display: grid;
+    grid-template-columns: 70px 62px 100px 180px 1fr;
+    background: #1e293b;
+    padding: 8px 6px;
+    border-bottom: 1px solid #334155;
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.events-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px;
+}
+
+/* Event Row Container */
+.event-row-container {
+    margin-bottom: 2px;
+    transition: all 0.3s ease;
+}
+
+.event-row-container.hidden {
+    display: none;
+}
+
+/* Event Row */
+.event-row {
+    display: grid;
+    grid-template-columns: 70px 62px 100px 180px 1fr;
+    background: #1e293b;
+    padding: 8px 6px;
+    border: 1px solid #334155;
+    border-radius: 4px;
+    transition: all 0.1s;
+    animation: slideIn 0.2s ease;
+    cursor: pointer;
+}
+
+.event-row:hover {
+    border-color: #475569;
+    background: #263245;
+}
+
+.event-row-container.expanded .event-row {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Expanded Content Styles */
+.expanded-content {
+    background: #0f172a;
+    border: 1px solid #475569;
+    border-top: none;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    opacity: 0;
+    padding: 0;
+}
+
+.event-row-container.expanded .expanded-content {
+    max-height: 800px;
+    overflow-y: auto;
+    opacity: 1;
+    padding: 12px 16px;
+}
+
+/* Event Columns */
+.col-session {
+    font-size: 11px;
+    color: #64748b;
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.col-time {
+    font-size: 11px;
+    color: #94a3b8;
+    font-family: 'SF Mono', Monaco, monospace;
+}
+
+.events-header .col-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-clear-icon {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 2px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.btn-clear-icon:hover {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.col-type {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+}
+
+.event-type {
+    display: inline-block;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.event-type.PreToolUse {
+    background: #1e40af;
+    color: #dbeafe;
+}
+
+.event-type.PostToolUse {
+    background: #065f46;
+    color: #d1fae5;
+}
+
+.event-type.Notification {
+    background: #92400e;
+    color: #fed7aa;
+}
+
+.event-type.Stop {
+    background: #991b1b;
+    color: #fee2e2;
+}
+
+.event-type.SubagentStop {
+    background: #6b21a8;
+    color: #e9d5ff;
+}
+
+.col-tool {
+    font-size: 11px;
+    color: #f1f5f9;
+    font-family: 'SF Mono', Monaco, monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.col-details {
+    font-size: 11px;
+    color: #94a3b8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Data Section */
+.data-section {
+    margin-top: 16px;
+}
+
+.data-section h5 {
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    margin: 0 0 8px 0;
+}
+
+.expanded-content .json-data {
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 11px;
+    color: #94a3b8;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-y: auto;
+}
+
+/* Scrollbar */
+.events-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.events-list::-webkit-scrollbar-track {
+    background: #1e293b;
+}
+
+.events-list::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 3px;
+}
+
+.events-list::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Claudia</h1>
+        </header>
+
+        <div class="main-content">
+            <div class="events-container">
+                <div class="events-header">
+                    <div class="col-session">
+                        <input type="text" id="session-filter" class="header-filter" placeholder="Session" onkeyup="filterBySession(this.value)">
+                    </div>
+                    <div class="col-time">Time</div>
+                    <div class="col-type">
+                        <div class="type-dropdown">
+                            <button class="dropdown-toggle" onclick="toggleTypeDropdown()" id="type-dropdown-btn">
+                                Type
+                                <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor" style="margin-left: 4px;">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                            <div class="dropdown-menu" id="type-dropdown-menu" style="display: none;">
+                                <label class="dropdown-item">
+                                    <span>All Events</span>
+                                    <input type="checkbox" class="toggle-switch" checked onchange="toggleAllFilters(this)">
+                                </label>
+                                <div class="dropdown-separator"></div>
+                                <label class="dropdown-item">
+                                    <span>PreToolUse</span>
+                                    <input type="checkbox" class="toggle-switch" checked data-filter="PreToolUse" onchange="toggleFilter(this)">
+                                </label>
+                                <label class="dropdown-item">
+                                    <span>PostToolUse</span>
+                                    <input type="checkbox" class="toggle-switch" checked data-filter="PostToolUse" onchange="toggleFilter(this)">
+                                </label>
+                                <label class="dropdown-item">
+                                    <span>Notification</span>
+                                    <input type="checkbox" class="toggle-switch" checked data-filter="Notification" onchange="toggleFilter(this)">
+                                </label>
+                                <label class="dropdown-item">
+                                    <span>Stop</span>
+                                    <input type="checkbox" class="toggle-switch" checked data-filter="Stop" onchange="toggleFilter(this)">
+                                </label>
+                                <label class="dropdown-item">
+                                    <span>SubagentStop</span>
+                                    <input type="checkbox" class="toggle-switch" checked data-filter="SubagentStop" onchange="toggleFilter(this)">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-tool">
+                        <input type="text" id="tool-filter" class="header-filter" placeholder="Tool/Action" onkeyup="filterByTool(this.value)">
+                    </div>
+                    <div class="col-details">
+                        <span>Details</span>
+                        <button class="btn-clear-icon" onclick="clearMessages()" title="Clear all">
+                            <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4-1a1 1 0 011 1v6a1 1 0 11-2 0V8a1 1 0 011-1z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="events-list" class="events-list">
+                    <!-- Events will be dynamically inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let events = [];
+        let filters = {
+            session: '',
+            tool: '',
+            types: {
+                PreToolUse: true,
+                PostToolUse: true,
+                Notification: true,
+                Stop: true,
+                SubagentStop: true
+            }
+        };
+        let expandedRowId = null;
+
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket('ws://localhost:4519');
+                
+                ws.onopen = () => {
+                    console.log('Connected to server');
+                };
+                
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        addEvent(data);
+                    } catch (error) {
+                        console.error('Failed to parse message:', error);
+                    }
+                };
+                
+                ws.onclose = () => {
+                    console.log('Disconnected from server');
+                    // Reconnect after 2 seconds
+                    setTimeout(connectWebSocket, 2000);
+                };
+                
+                ws.onerror = (error) => {
+                    console.error('WebSocket error:', error);
+                };
+            } catch (error) {
+                console.error('Failed to connect:', error);
+                setTimeout(connectWebSocket, 2000);
+            }
+        }
+
+        function addEvent(data) {
+            const event = {
+                id: Date.now() + Math.random(),
+                timestamp: data.timestamp || new Date().toISOString(),
+                data: data.message || data
+            };
+            
+            events.push(event);
+            renderEvent(event);
+        }
+
+        function renderEvent(event) {
+            const eventsList = document.getElementById('events-list');
+            const eventData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+            
+            // Extract event details
+            const eventType = eventData.hook_event_name || 'Unknown';
+            const tool = eventData.tool_name || '-';
+            const session = eventData.session_id || '-';
+            const time = new Date(event.timestamp).toLocaleTimeString('en-US', { hour12: false });
+            
+            // Get details based on event type
+            let details = '';
+            if (eventData.tool_input) {
+                if (eventData.tool_input.description) {
+                    details = eventData.tool_input.description;
+                } else if (eventData.tool_input.file_path) {
+                    details = eventData.tool_input.file_path;
+                } else if (eventData.tool_input.command) {
+                    details = eventData.tool_input.command;
+                }
+            } else if (eventData.message) {
+                details = eventData.message;
+            } else if (eventData.result) {
+                details = typeof eventData.result === 'string' ? eventData.result : 'Result available';
+            }
+            
+            // Create event row container
+            const container = document.createElement('div');
+            container.className = 'event-row-container';
+            container.dataset.eventId = event.id;
+            container.dataset.session = session.toLowerCase();
+            container.dataset.tool = tool.toLowerCase();
+            container.dataset.type = eventType;
+            
+            // Create event row
+            const row = document.createElement('div');
+            row.className = 'event-row';
+            row.innerHTML = `
+                <div class="col-session">${session.substring(0, 7)}</div>
+                <div class="col-time">${time}</div>
+                <div class="col-type">
+                    <span class="event-type ${eventType}">${eventType}</span>
+                </div>
+                <div class="col-tool">${tool.replace(/^mcp__/, '')}</div>
+                <div class="col-details">${details}</div>
+            `;
+            
+            // Create expanded content
+            const expanded = document.createElement('div');
+            expanded.className = 'expanded-content';
+            expanded.innerHTML = `
+                <div class="data-section">
+                    <h5>Event Data</h5>
+                    <pre class="json-data">${JSON.stringify(eventData, null, 2)}</pre>
+                </div>
+            `;
+            
+            // Add to container
+            container.appendChild(row);
+            container.appendChild(expanded);
+            
+            // Add click handler
+            row.onclick = () => toggleRow(event.id);
+            
+            // Add to DOM
+            eventsList.appendChild(container);
+            
+            // Apply filters
+            applyFilters();
+        }
+
+        function toggleRow(eventId) {
+            const containers = document.querySelectorAll('.event-row-container');
+            containers.forEach(container => {
+                if (container.dataset.eventId === String(eventId)) {
+                    if (container.classList.contains('expanded')) {
+                        container.classList.remove('expanded');
+                        expandedRowId = null;
+                    } else {
+                        // Collapse any other expanded row
+                        containers.forEach(c => c.classList.remove('expanded'));
+                        container.classList.add('expanded');
+                        expandedRowId = eventId;
+                    }
+                } else {
+                    container.classList.remove('expanded');
+                }
+            });
+        }
+
+        function filterBySession(value) {
+            filters.session = value.toLowerCase();
+            applyFilters();
+        }
+
+        function filterByTool(value) {
+            filters.tool = value.toLowerCase();
+            applyFilters();
+        }
+
+        function toggleFilter(checkbox) {
+            const filterType = checkbox.dataset.filter;
+            filters.types[filterType] = checkbox.checked;
+            applyFilters();
+        }
+
+        function toggleAllFilters(checkbox) {
+            const allChecked = checkbox.checked;
+            Object.keys(filters.types).forEach(type => {
+                filters.types[type] = allChecked;
+            });
+            
+            // Update all individual checkboxes
+            document.querySelectorAll('[data-filter]').forEach(cb => {
+                cb.checked = allChecked;
+            });
+            
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const containers = document.querySelectorAll('.event-row-container');
+            containers.forEach(container => {
+                const matchSession = !filters.session || container.dataset.session.includes(filters.session);
+                const matchTool = !filters.tool || container.dataset.tool.includes(filters.tool);
+                const matchType = filters.types[container.dataset.type];
+                
+                const show = matchSession && matchTool && matchType;
+                container.classList.toggle('hidden', !show);
+            });
+        }
+
+        function toggleTypeDropdown() {
+            const menu = document.getElementById('type-dropdown-menu');
+            const isVisible = menu.style.display === 'block';
+            menu.style.display = isVisible ? 'none' : 'block';
+        }
+
+        function clearMessages() {
+            if (confirm('Clear all events?')) {
+                events = [];
+                document.getElementById('events-list').innerHTML = '';
+            }
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const dropdown = document.querySelector('.type-dropdown');
+            if (!dropdown.contains(e.target)) {
+                document.getElementById('type-dropdown-menu').style.display = 'none';
+            }
+        });
+
+        // Connect on load
+        connectWebSocket();
+    </script>
+</body>
+</html>

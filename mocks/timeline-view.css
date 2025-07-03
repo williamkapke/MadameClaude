@@ -1,0 +1,387 @@
+/* Reset and Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f0f4f8;
+    color: #2d3748;
+    overflow: hidden;
+}
+
+.app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 12px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    color: #4299e1;
+}
+
+.navbar h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a202c;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: #e2e8f0;
+    border-radius: 8px;
+    color: #4a5568;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background: #cbd5e0;
+    color: #2d3748;
+}
+
+.btn-icon.active {
+    background: #4299e1;
+    color: white;
+}
+
+/* Content Layout */
+.content {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background: white;
+    border-right: 1px solid #e2e8f0;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.filter-section, .stats-section {
+    margin-bottom: 32px;
+}
+
+.sidebar h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #718096;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+}
+
+/* Filter Chips */
+.filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    padding: 6px 14px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chip:hover {
+    border-color: #cbd5e0;
+    background: #f7fafc;
+}
+
+.chip.active {
+    background: #4299e1;
+    color: white;
+    border-color: #4299e1;
+}
+
+/* Event type colors for chips */
+.chip.PreToolUse.active {
+    background: #3182ce;
+    border-color: #3182ce;
+}
+
+.chip.PostToolUse.active {
+    background: #38a169;
+    border-color: #38a169;
+}
+
+.chip.Notification.active {
+    background: #d69e2e;
+    border-color: #d69e2e;
+}
+
+.chip.Stop.active {
+    background: #e53e3e;
+    border-color: #e53e3e;
+}
+
+.chip.SubagentStop.active {
+    background: #805ad5;
+    border-color: #805ad5;
+}
+
+/* Stats Grid */
+.stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-card {
+    background: #f7fafc;
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a202c;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #718096;
+    margin-top: 4px;
+}
+
+/* Timeline Container */
+.timeline-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 40px;
+    background: #f0f4f8;
+}
+
+.timeline {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding-bottom: 100px;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #cbd5e0;
+}
+
+/* Timeline Event */
+.timeline-event {
+    position: relative;
+    margin-bottom: 24px;
+    padding-left: 60px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.timeline-event.hidden {
+    display: none;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 16px;
+    top: 8px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Event type colors for dots */
+.timeline-event.PreToolUse .timeline-dot {
+    background: #3182ce;
+}
+
+.timeline-event.PostToolUse .timeline-dot {
+    background: #38a169;
+}
+
+.timeline-event.Notification .timeline-dot {
+    background: #d69e2e;
+}
+
+.timeline-event.Stop .timeline-dot {
+    background: #e53e3e;
+}
+
+.timeline-event.SubagentStop .timeline-dot {
+    background: #805ad5;
+}
+
+.timeline-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.timeline-header {
+    padding: 16px 20px;
+    background: #f7fafc;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.timeline-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.event-badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: white;
+}
+
+.event-badge.PreToolUse {
+    background: #3182ce;
+}
+
+.event-badge.PostToolUse {
+    background: #38a169;
+}
+
+.event-badge.Notification {
+    background: #d69e2e;
+}
+
+.event-badge.Stop {
+    background: #e53e3e;
+}
+
+.event-badge.SubagentStop {
+    background: #805ad5;
+}
+
+.tool-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.timeline-time {
+    font-size: 12px;
+    color: #718096;
+}
+
+.timeline-body {
+    padding: 16px 20px;
+}
+
+.timeline-detail {
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.detail-label {
+    color: #718096;
+    display: inline-block;
+    min-width: 80px;
+}
+
+.detail-value {
+    color: #2d3748;
+}
+
+.code-block {
+    background: #f7fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 8px;
+    font-family: 'SF Mono', Monaco, monospace;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 40px;
+    color: #a0aec0;
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    color: #cbd5e0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}

@@ -1,0 +1,59 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
+          }
+        ]
+      }
+    ]
+  }
+}

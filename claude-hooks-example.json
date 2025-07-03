@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno run --allow-net --allow-read /Users/kap/Documents/Code/williamkapke/claudia/stdio2http/main.ts"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno run --allow-net --allow-read /Users/kap/Documents/Code/williamkapke/claudia/stdio2http/main.ts"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "deno run --allow-net --allow-read /Users/kap/Documents/Code/williamkapke/claudia/stdio2http/main.ts"
+          }
+        ]
+      }
+    ]
+  }
+}

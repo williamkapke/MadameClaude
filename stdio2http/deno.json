@@ -1,0 +1,25 @@
+{
+  "name": "stdio2http",
+  "version": "1.0.0",
+  "description": "Deno app that reads from stdio and POSTs to HTTP server",
+  "exports": "./main.ts",
+  "tasks": {
+    "start": "deno run --allow-net --allow-read main.ts",
+    "test": "deno test --allow-net --allow-read",
+    "check": "deno check main.ts",
+    "lint": "deno lint"
+  },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 80,
+    "indentWidth": 2,
+    "semiColons": true,
+    "singleQuote": false,
+    "proseWrap": "preserve"
+  },
+  "lint": {
+    "rules": {
+      "tags": ["recommended"]
+    }
+  }
+}
