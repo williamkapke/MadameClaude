@@ -203,7 +203,7 @@
 
       .events-header {
         display: grid;
-        grid-template-columns: 70px 62px 100px 180px 1fr;
+        grid-template-columns: 70px 80px 62px 100px 180px 1fr;
         background: #1e293b;
         padding: 8px 6px;
         border-bottom: 1px solid #334155;
@@ -233,7 +233,7 @@
       /* Event Row */
       .event-row {
         display: grid;
-        grid-template-columns: 70px 62px 100px 180px 1fr;
+        grid-template-columns: 70px 80px 62px 100px 180px 1fr;
         background: #1e293b;
         padding: 8px 6px;
         border: 1px solid #334155;
@@ -292,6 +292,28 @@
         font-size: 11px;
         color: #64748b;
         font-family: "SF Mono", Monaco, monospace;
+      }
+      
+      .col-location {
+        font-size: 11px;
+        color: #f1f5f9;
+        font-family: "SF Mono", Monaco, monospace;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      
+      /* Color badges for session and location */
+      .session-badge, .location-badge {
+        display: inline-block;
+        padding: 1px 4px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
       }
 
       .col-time {
@@ -576,6 +598,15 @@
                 onkeyup="filterBySession(this.value)"
               >
             </div>
+            <div class="col-location">
+              <input
+                type="text"
+                id="location-filter"
+                class="header-filter"
+                placeholder="Location"
+                onkeyup="filterByLocation(this.value)"
+              >
+            </div>
             <div class="col-time">Time</div>
             <div class="col-type">
               <div class="type-dropdown">
@@ -749,6 +780,7 @@
       let events = [];
       let filters = {
         session: "",
+        location: "",
         tool: "",
         types: {
           PreToolUse: true,
@@ -759,6 +791,40 @@
         },
       };
       let expandedRowId = null;
+      
+      // Color palettes for unique IDs
+      const colorPalette = [
+        '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
+        '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#84cc16',
+        '#06b6d4', '#a855f7', '#eab308', '#0ea5e9', '#d946ef',
+        '#22c55e', '#f43f5e', '#3b82f6', '#a78bfa', '#fbbf24'
+      ];
+      
+      const sessionColors = new Map();
+      const locationColors = new Map();
+      let colorIndex = 0;
+      
+      function getColorForId(id, map) {
+        if (!map.has(id)) {
+          map.set(id, colorPalette[colorIndex % colorPalette.length]);
+          colorIndex++;
+        }
+        return map.get(id);
+      }
+      
+      function extractLocationName(transcriptPath) {
+        if (!transcriptPath) return '-';
+        // Extract the project location name from the transcript path
+        // Example: "/Users/kap/.claude/projects/-Users-kap-Documents-Code-williamkapke-claudia/..."
+        const match = transcriptPath.match(/\/projects\/([^\/]+)\//);
+        if (match && match[1]) {
+          // Convert the escaped path to readable location name
+          // "-Users-kap-Documents-Code-williamkapke-claudia" -> "claudia"
+          const parts = match[1].split('-').filter(p => p);
+          return parts[parts.length - 1] || '-';
+        }
+        return '-';
+      }
       
       // Sound settings
       let soundSettings = {
@@ -904,6 +970,7 @@
         const eventType = eventData.hook_event_name || "Unknown";
         const tool = eventData.tool_name || "-";
         const session = eventData.session_id || "-";
+        const location = extractLocationName(eventData.transcript_path);
         const time = new Date(event.timestamp).toLocaleTimeString(
           "en-US",
           { hour12: false },
@@ -941,16 +1008,28 @@
         container.className = "event-row-container";
         container.dataset.eventId = event.id;
         container.dataset.session = session.toLowerCase();
+        container.dataset.location = location.toLowerCase();
         container.dataset.tool = tool.toLowerCase();
         container.dataset.type = eventType;
+
+        // Get colors for session and location
+        const sessionColor = getColorForId(session, sessionColors);
+        const locationColor = getColorForId(location, locationColors);
 
         // Create event row
         const row = document.createElement("div");
         row.className = "event-row";
         row.innerHTML = `
-                <div class="col-session">${
-          session.substring(0, 7)
-        }</div>
+                <div class="col-session">
+                    <span class="session-badge" style="background-color: ${sessionColor}20; color: ${sessionColor}; border: 1px solid ${sessionColor}40;">
+                        ${session.substring(0, 7)}
+                    </span>
+                </div>
+                <div class="col-location">
+                    <span class="location-badge" style="background-color: ${locationColor}20; color: ${locationColor}; border: 1px solid ${locationColor}40;">
+                        ${location}
+                    </span>
+                </div>
                 <div class="col-time">${time}</div>
                 <div class="col-type">
                     <span class="event-type ${eventType}">${eventType}</span>
@@ -1012,6 +1091,11 @@
         filters.session = value.toLowerCase();
         applyFilters();
       }
+      
+      function filterByLocation(value) {
+        filters.location = value.toLowerCase();
+        applyFilters();
+      }
 
       function filterByTool(value) {
         filters.tool = value.toLowerCase();
@@ -1045,11 +1129,13 @@
         containers.forEach((container) => {
           const matchSession = !filters.session ||
             container.dataset.session.includes(filters.session);
+          const matchLocation = !filters.location ||
+            container.dataset.location.includes(filters.location);
           const matchTool = !filters.tool ||
             container.dataset.tool.includes(filters.tool);
           const matchType = filters.types[container.dataset.type];
 
-          const show = matchSession && matchTool && matchType;
+          const show = matchSession && matchLocation && matchTool && matchType;
           container.classList.toggle("hidden", !show);
         });
       }
