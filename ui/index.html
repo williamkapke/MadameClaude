@@ -791,6 +791,7 @@
         },
       };
       let expandedRowId = null;
+      let isUserScrolling = false;
       
       // Color palettes for unique IDs
       const colorPalette = [
@@ -1059,11 +1060,19 @@
         // Add click handler
         row.onclick = () => toggleRow(event.id);
 
+        // Check if user is at bottom before adding new element
+        const shouldAutoScroll = isAtBottom();
+        
         // Add to DOM
         eventsList.appendChild(container);
 
         // Apply filters
         applyFilters();
+        
+        // Auto-scroll to bottom if user was already at bottom
+        if (shouldAutoScroll) {
+          scrollToBottom();
+        }
       }
 
       function toggleRow(eventId) {
@@ -1173,6 +1182,35 @@
         if (e.target.id === 'settings-modal') {
           closeSettings();
         }
+      });
+      
+      // Auto-scroll functions
+      function isAtBottom() {
+        const eventsList = document.getElementById('events-list');
+        const threshold = 50; // Pixels from bottom to consider "at bottom"
+        return eventsList.scrollHeight - eventsList.scrollTop - eventsList.clientHeight < threshold;
+      }
+      
+      function scrollToBottom() {
+        const eventsList = document.getElementById('events-list');
+        eventsList.scrollTop = eventsList.scrollHeight;
+      }
+      
+      // Track user scrolling
+      let scrollTimer = null;
+      document.getElementById('events-list').addEventListener('scroll', () => {
+        // Clear existing timer
+        if (scrollTimer) {
+          clearTimeout(scrollTimer);
+        }
+        
+        // Set flag to indicate user is scrolling
+        isUserScrolling = true;
+        
+        // Reset flag after scrolling stops
+        scrollTimer = setTimeout(() => {
+          isUserScrolling = false;
+        }, 150);
       });
     </script>
   </body>
