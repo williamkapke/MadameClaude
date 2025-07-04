@@ -6,7 +6,7 @@ const path = require('path');
 const { WebSocketServer } = require('ws');
 
 const PORT = process.env.PORT || 4519;
-const validPaths = ['/index.html', '/notification.mp3', '/stop.mp3'];
+const validPaths = ['/index.html', '/notification.mp3', '/stop.mp3', '/logo.svg'];
 
 // Store connected WebSocket clients
 const wsClients = new Set();
@@ -105,6 +105,16 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
+  // Check for server status probe
+  if (req.method === 'GET' && url.pathname === '/' && url.searchParams.has('probe')) {
+    res.writeHead(302, { 
+      'Location': '/',
+      'Access-Control-Allow-Origin': '*'
+    });
+    res.end();
+    return;
+  }
+
   // Serve UI files for GET requests
   const filePath = (url.pathname === '/' ? '/index.html' : url.pathname).toLowerCase();
   if (req.method === 'GET' && validPaths.includes(filePath)) {
@@ -114,9 +124,11 @@ const server = http.createServer(async (req, res) => {
       const contentTypes = {
         'html': 'text/html',
         'mp3': 'audio/mpeg',
+        'svg': 'image/svg+xml',
       };
       // Read and serve the file
-      const data = await readFile(path.join(__dirname, filePath), { encoding: 'utf8' });
+      const encoding = ext === 'mp3' ? null : 'utf8';
+      const data = await readFile(path.join(__dirname, filePath), encoding ? { encoding } : {});
       res.writeHead(200, { 
         'Content-Type': contentTypes[ext],
         'Access-Control-Allow-Origin': '*'
