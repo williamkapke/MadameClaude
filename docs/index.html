@@ -326,7 +326,7 @@
                 <li><a href="https://github.com/williamkapke/MadameClaude#readme">Documentation</a></li>
                 <li><a href="https://github.com/williamkapke/MadameClaude">GitHub</a></li>
             </ul>
-            <a href="monitor.html" class="cta-button">Open Monitor</a>
+            <a href="http://localhost:4519/" class="cta-button">Open Monitor</a>
         </nav>
     </header>
 
@@ -337,7 +337,7 @@
             your AI assistant's behavior with instant visual feedback.
         </p>
         <div class="hero-buttons">
-            <a href="monitor.html" class="primary-button">Launch Monitor</a>
+            <a href="http://localhost:4519/" class="primary-button">Launch Monitor</a>
             <a href="https://github.com/williamkapke/MadameClaude" class="secondary-button">View on GitHub</a>
         </div>
         <div class="demo-container">
@@ -389,15 +389,15 @@
             <div class="step">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                    <h3>Configure Hooks</h3>
-                    <p>Add Madame Claude to your Claude Code hooks configuration.</p>
+                    <h3>Start the Server</h3>
+                    <p>Run the Madame Claude server with a simple npm command.</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
                 <div class="step-content">
-                    <h3>Start the Server</h3>
-                    <p>Run the Madame Claude server with a simple npm command.</p>
+                    <h3>Configure Hooks</h3>
+                    <p>Add Madame Claude to your Claude Code hooks configuration.</p>
                 </div>
             </div>
             <div class="step">
@@ -422,7 +422,7 @@
             <h2>Easy Setup</h2>
             <p style="color: #9ca3af; margin-bottom: 1.5rem; text-align: center;">
                 Add this configuration to your Claude Code settings file:<br>
-                <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">~/.claude/settings.json</code> (macOS/Linux) or 
+                <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">~/.claude/settings.json</code> (macOS/Linux) or
                 <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">%USERPROFILE%\.claude\settings.json</code> (Windows)
             </p>
             <div class="code-block">
@@ -430,26 +430,27 @@
   "hooks": {
     "PreToolUse": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
     }],
     "PostToolUse": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
     }],
     "Notification": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
     }],
     "Stop": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
     }],
     "SubagentStop": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
     }]
   }
-}</pre>
+}
+</pre>
             </div>
         </div>
     </section>

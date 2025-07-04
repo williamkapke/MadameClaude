@@ -179,13 +179,13 @@ MadameClaude/
 │   ├── bridge.js        # Hook event capture
 │   ├── server.test.js   # Server tests
 │   ├── bridge.test.js   # Bridge tests
-│   └── package.json     # Node.js configuration
-├── docs/                # Web interface (GitHub Pages)
-│   ├── index.html       # Landing page
-│   ├── monitor.html     # Monitor interface
-│   ├── monitor.jpg      # Screenshot
+│   ├── package.json     # Node.js configuration
+│   ├── index.html       # Monitor interface
 │   ├── notification.mp3 # Notification sound
 │   └── stop.mp3         # Stop sound
+├── docs/                # Documentation site (GitHub Pages)
+│   ├── index.html       # Landing page
+│   └── monitor.jpg      # Screenshot
 └── README.md            # This file
 ```
 

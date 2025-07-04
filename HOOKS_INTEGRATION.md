@@ -97,10 +97,10 @@ When Claude Code executes a hook, it pipes JSON data to stdin:
 
 1. Start the server:
    ```bash
-   cd server && deno run --allow-net server.ts
+   cd server && npm start
    ```
 
-2. In another terminal, test stdio2http directly:
+2. In another terminal, test the bridge directly:
    ```bash
    echo '{"test": "message"}' | node server/bridge.js
    ```

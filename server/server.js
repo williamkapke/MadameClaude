@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 const http = require('http');
-const fs = require('fs');
+const { readFile } = require('node:fs/promises');
 const path = require('path');
 const { WebSocketServer } = require('ws');
 
 const PORT = process.env.PORT || 4519;
+const validPaths = ['/index.html', '/notification.mp3', '/stop.mp3'];
 
 // Store connected WebSocket clients
 const wsClients = new Set();
@@ -17,23 +18,23 @@ const server = http.createServer(async (req, res) => {
   // Handle HTTP POST requests
   if (req.method === 'POST' && url.pathname === '/') {
     let body = '';
-    
+
     req.on('data', chunk => {
       body += chunk.toString();
     });
-    
+
     req.on('end', () => {
       try {
         // Add timestamp to the received data
         const timestamp = new Date().toISOString();
         const messageObj = JSON.parse(body);
-        
+
         // Create the data structure with timestamp
         const data = {
           message: body,
           timestamp: timestamp
         };
-        
+
         // Log to console with color formatting for hook_event_name and tool_name values
         try {
           const hookEventName = messageObj.hook_event_name;
@@ -105,75 +106,27 @@ const server = http.createServer(async (req, res) => {
   }
 
   // Serve UI files for GET requests
-  if (req.method === 'GET') {
+  const filePath = (url.pathname === '/' ? '/index.html' : url.pathname).toLowerCase();
+  if (req.method === 'GET' && validPaths.includes(filePath)) {
     try {
-      // Default to index.html for root path
-      const filePath = url.pathname === '/' ? '/index.html' : url.pathname;
-      const uiPath = path.join(__dirname, '..', 'docs', filePath);
-      
       // Determine content type based on file extension
       const ext = path.extname(filePath).toLowerCase().slice(1);
       const contentTypes = {
         'html': 'text/html',
-        'js': 'application/javascript',
-        'css': 'text/css',
         'mp3': 'audio/mpeg',
-        'wav': 'audio/wav',
-        'png': 'image/png',
-        'jpg': 'image/jpeg',
-        'jpeg': 'image/jpeg',
-        'svg': 'image/svg+xml',
       };
-      const contentType = contentTypes[ext] || 'application/octet-stream';
-      
-      // Set cache headers based on file type
-      const headers = {
-        'Content-Type': contentType,
-      };
-      
-      // Add cache headers for static assets
-      if (['mp3', 'wav', 'png', 'jpg', 'jpeg', 'svg'].includes(ext)) {
-        // Cache media files for 1 day
-        headers['Cache-Control'] = 'public, max-age=86400';
-      } else if (['css', 'js'].includes(ext)) {
-        // Cache CSS/JS for 1 hour (in case of updates)
-        headers['Cache-Control'] = 'public, max-age=3600';
-      } else if (ext === 'html' || !ext) {
-        // Don't cache HTML to ensure updates are seen
-        headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
-      }
-      
       // Read and serve the file
-      fs.readFile(uiPath, (err, data) => {
-        if (err) {
-          // Only log errors for files that aren't known browser/tool requests
-          const knownMissingFiles = [
-            '.well-known/appspecific/com.chrome.devtools.json',
-            'favicon.ico',
-            'robots.txt'
-          ];
-          
-          if (!knownMissingFiles.some(file => url.pathname.includes(file))) {
-            console.error('Failed to serve file:', err);
-          }
-          
-          res.writeHead(404);
-          res.end('File not found');
-        } else {
-          res.writeHead(200, headers);
-          res.end(data);
-        }
-      });
-    } catch (error) {
-      console.error('Error serving file:', error);
-      res.writeHead(404);
-      res.end('File not found');
+      const data = await readFile(path.join(__dirname, filePath), { encoding: 'utf8' });
+      res.writeHead(200, { 'Content-Type': contentTypes[ext], });
+      res.end(data);
+      return;
     }
-    return;
+    catch (error) {
+      console.error('Error serving file:', error);
+    }
   }
-
-  res.writeHead(404);
-  res.end('Not Found');
+  console.error('Invalid request:', req.method, url.pathname);
+  res.writeHead(404).end('Not Found');
 });
 
 // Create WebSocket server
