@@ -4,6 +4,7 @@ const http = require('http');
 const { readFile } = require('node:fs/promises');
 const path = require('path');
 const { WebSocketServer } = require('ws');
+const { handleHooksRequest } = require('./hooks-handler');
 
 const PORT = process.env.PORT || 4519;
 const validPaths = ['/index.html', '/notification.mp3', '/stop.mp3', '/logo.svg'];
@@ -98,7 +99,7 @@ const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
     });
     res.end();
@@ -112,6 +113,12 @@ const server = http.createServer(async (req, res) => {
       'Access-Control-Allow-Origin': '*'
     });
     res.end();
+    return;
+  }
+
+  // Handle /hooks endpoint (GET and POST)
+  if (url.pathname === '/hooks') {
+    await handleHooksRequest(req, res);
     return;
   }
 
