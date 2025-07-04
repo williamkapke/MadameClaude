@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "Monitoring system for Claude Code hooks that captures and streams tool usage events",
   "bin": {
-    "madame-claude": "./server.js",
-    "bridge": "./bridge.js"
+    "madame-claude": "server.js",
+    "bridge": "bridge.js"
   },
   "scripts": {
     "start": "node server.js",
