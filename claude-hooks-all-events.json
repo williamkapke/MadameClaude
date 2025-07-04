@@ -1,59 +1,24 @@
 {
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
-          }
-        ]
-      }
-    ],
-    "SubagentStop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "deno task --cwd /Users/kap/Documents/Code/williamkapke/claudia/stdio2http start"
-          }
-        ]
-      }
-    ]
+    "PreToolUse": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "PostToolUse": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "Notification": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "Stop": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "SubagentStop": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }]
   }
 }

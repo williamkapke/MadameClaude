@@ -7,7 +7,7 @@ echo
 
 # Test 1: Check if all components exist
 echo "1. Checking components..."
-if [ -f "server/bridge.js" ] && [ -f "server/server.js" ] && [ -f "ui/index.html" ]; then
+if [ -f "server/bridge.js" ] && [ -f "server/server.js" ] && [ -f "docs/index.html" ]; then
     echo "✓ All components found"
 else
     echo "✗ Missing components"
@@ -17,7 +17,7 @@ fi
 # Test 2: Check if sound files exist
 echo
 echo "2. Checking sound files..."
-if [ -f "ui/notification.mp3" ] && [ -f "ui/stop.mp3" ]; then
+if [ -f "docs/notification.mp3" ] && [ -f "docs/stop.mp3" ]; then
     echo "✓ Sound files found"
 else
     echo "✗ Missing sound files"

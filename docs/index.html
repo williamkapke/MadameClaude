@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madame Claude - Real-time Claude Code Hook Monitor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e5e7eb;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #1f2937;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #dc2626;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 2rem;
+            text-align: center;
+            background: radial-gradient(circle at center, #1a1a1a 0%, #0a0a0a 100%);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff 0%, #9ca3af 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero .subtitle {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 4rem;
+        }
+
+        .primary-button {
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .secondary-button {
+            background: transparent;
+            color: #dc2626;
+            padding: 0.75rem 2rem;
+            border: 2px solid #dc2626;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .primary-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .secondary-button:hover {
+            background: #dc2626;
+            color: white;
+        }
+
+        /* Demo Screenshot */
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .demo-image {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1f2937;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: #0f0f0f;
+        }
+
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #2d3748;
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: #dc2626;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 0.5rem;
+            color: #f3f4f6;
+        }
+
+        .feature-card p {
+            color: #9ca3af;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            padding: 6rem 2rem;
+            background: #0a0a0a;
+        }
+
+        .how-it-works h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 2rem;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin-bottom: 0.5rem;
+            color: #f3f4f6;
+        }
+
+        .step-content p {
+            color: #9ca3af;
+        }
+
+        /* Code Example */
+        .code-section {
+            padding: 6rem 2rem;
+            background: #0f0f0f;
+        }
+
+        .code-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .code-section h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .code-block {
+            background: #1a1a1a;
+            border: 1px solid #2d3748;
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .code-block pre {
+            color: #e5e7eb;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 2rem;
+            background: #000;
+            text-align: center;
+            border-top: 1px solid #1f2937;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            color: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Madame Claude</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="https://github.com/williamkapke/MadameClaude#readme">Documentation</a></li>
+                <li><a href="https://github.com/williamkapke/MadameClaude">GitHub</a></li>
+            </ul>
+            <a href="monitor.html" class="cta-button">Open Monitor</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Real-time Hook Monitoring for Claude Code</h1>
+        <p class="subtitle">
+            Watch Claude Code's tool usage in real-time. Debug, analyze, and understand
+            your AI assistant's behavior with instant visual feedback.
+        </p>
+        <div class="hero-buttons">
+            <a href="monitor.html" class="primary-button">Launch Monitor</a>
+            <a href="https://github.com/williamkapke/MadameClaude" class="secondary-button">View on GitHub</a>
+        </div>
+        <div class="demo-container">
+            <img src="monitor.jpg" alt="Madame Claude Interface" class="demo-image">
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="features-container">
+            <h2>Powerful Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Real-time Streaming</h3>
+                    <p>See events as they happen with WebSocket streaming. No polling, no delays.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Smart Filtering</h3>
+                    <p>Filter by session, tool type, or event type to focus on what matters.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Sound Notifications</h3>
+                    <p>Customizable audio alerts for different event types keep you informed.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Color-coded Events</h3>
+                    <p>Instantly identify event types with intuitive color coding.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Session Tracking</h3>
+                    <p>Track multiple Claude Code sessions simultaneously.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Zero Blocking</h3>
+                    <p>Designed to never interrupt Claude Code's operation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Configure Hooks</h3>
+                    <p>Add Madame Claude to your Claude Code hooks configuration.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Start the Server</h3>
+                    <p>Run the Madame Claude server with a simple npm command.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Open the Dashboard</h3>
+                    <p>Navigate to localhost:4519 to see the real-time event stream.</p>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <h3>Monitor Events</h3>
+                    <p>Watch Claude Code's tool usage in real-time with detailed insights.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="code-section">
+        <div class="code-container">
+            <h2>Easy Setup</h2>
+            <p style="color: #9ca3af; margin-bottom: 1.5rem; text-align: center;">
+                Add this configuration to your Claude Code settings file:<br>
+                <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">~/.claude/settings.json</code> (macOS/Linux) or 
+                <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">%USERPROFILE%\.claude\settings.json</code> (Windows)
+            </p>
+            <div class="code-block">
+                <pre>{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "PostToolUse": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "Notification": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "Stop": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }],
+    "SubagentStop": [{
+      "matcher": ".*",
+      "hooks": [{ "type": "command", "command": "node /path/to/MadameClaude/server/bridge.js" } ]
+    }]
+  }
+}</pre>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/williamkapke/MadameClaude">GitHub</a>
+                <a href="https://github.com/williamkapke/MadameClaude#readme">Documentation</a>
+                <a href="https://github.com/williamkapke/MadameClaude/issues">Issues</a>
+                <a href="https://github.com/williamkapke/MadameClaude/blob/main/LICENSE">License</a>
+            </div>
+            <p style="color: #6b7280;">© 2024 Madame Claude. MIT License.</p>
+        </div>
+    </footer>
+</body>
+</html>

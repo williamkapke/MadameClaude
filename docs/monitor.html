@@ -15,8 +15,8 @@
       body {
         font-family:
           -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background-color: #0f172a;
-        color: #e2e8f0;
+        background-color: #0a0a0a;
+        color: #e5e7eb;
         font-size: 14px;
         line-height: 1.5;
       }
@@ -29,8 +29,9 @@
 
       /* Header */
       header {
-        background: #1e293b;
-        border-bottom: 1px solid #334155;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid #1f2937;
         padding: 6px 20px;
         display: grid;
         grid-template-columns: 1fr auto 1fr;
@@ -40,7 +41,7 @@
       .header-title {
         font-size: 16px;
         font-weight: 500;
-        color: #d2dadd;
+        color: #9ca3af;
         text-align: center;
       }
 
@@ -56,7 +57,7 @@
         background: transparent;
         border: none;
         justify-self: end;
-        color: #94a3b8;
+        color: #9ca3af;
         cursor: pointer;
         padding: 8px;
         border-radius: 6px;
@@ -64,8 +65,8 @@
       }
 
       .settings-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        color: #e2e8f0;
+        background: #1f2937;
+        color: #e5e7eb;
       }
 
       /* Main Content */
@@ -82,7 +83,7 @@
         background: transparent;
         border: none;
         border-bottom: 1px solid transparent;
-        color: #e2e8f0;
+        color: #e5e7eb;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
@@ -111,7 +112,7 @@
       .dropdown-toggle {
         background: transparent;
         border: none;
-        color: #94a3b8;
+        color: #9ca3af;
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
@@ -124,21 +125,21 @@
       }
 
       .dropdown-toggle:hover {
-        color: #e2e8f0;
+        color: #e5e7eb;
       }
 
       .dropdown-menu {
         position: absolute;
         top: 100%;
         left: -10px;
-        background: #1e293b;
-        border: 1px solid #334155;
+        background: #1a1a1a;
+        border: 1px solid #2d3748;
         border-radius: 6px;
         padding: 8px;
         min-width: 180px;
         z-index: 1000;
         margin-top: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
       }
 
       .dropdown-item {
@@ -166,7 +167,7 @@
         appearance: none;
         width: 36px;
         height: 20px;
-        background: #334155;
+        background: #2d3748;
         border-radius: 10px;
         position: relative;
         cursor: pointer;
@@ -205,19 +206,19 @@
         flex: 1;
         display: flex;
         flex-direction: column;
-        background: #0f172a;
+        background: #0a0a0a;
         width: 100%;
       }
 
       .events-header {
         display: grid;
         grid-template-columns: 70px 90px 62px 100px 180px 1fr;
-        background: #1e293b;
+        background: #0f0f0f;
         padding: 8px 6px;
-        border-bottom: 1px solid #334155;
+        border-bottom: 1px solid #1f2937;
         font-size: 11px;
         font-weight: 600;
-        color: #94a3b8;
+        color: #9ca3af;
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
@@ -242,9 +243,9 @@
       .event-row {
         display: grid;
         grid-template-columns: 70px 90px 62px 100px 180px 1fr;
-        background: #1e293b;
+        background: #1a1a1a;
         padding: 8px 6px;
-        border: 1px solid #334155;
+        border: 1px solid #2d3748;
         border-radius: 4px;
         transition: all 0.1s;
         animation: slideIn 0.2s ease;
@@ -252,8 +253,8 @@
       }
 
       .event-row:hover {
-        border-color: #475569;
-        background: #263245;
+        border-color: #dc2626;
+        background: #1f1f1f;
       }
 
       .event-row-container.expanded .event-row {
@@ -411,19 +412,6 @@
         white-space: nowrap;
       }
 
-      /* Data Section */
-      .data-section {
-        margin-top: 16px;
-      }
-
-      .data-section h5 {
-        font-size: 12px;
-        font-weight: 600;
-        color: #94a3b8;
-        text-transform: uppercase;
-        margin: 0 0 8px 0;
-      }
-
       .expanded-content .json-data {
         background: transparent;
         border: none;
@@ -455,6 +443,29 @@
         background: #64748b;
       }
 
+      /* Empty State */
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        text-align: center;
+        color: #6b7280;
+      }
+
+      .empty-state h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: #9ca3af;
+      }
+
+      .empty-state p {
+        font-size: 1rem;
+        color: #6b7280;
+      }
+
       /* Modal Styles */
       .modal-overlay {
         position: fixed;
@@ -462,7 +473,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
+        background: rgba(0, 0, 0, 0.9);
         display: none;
         align-items: center;
         justify-content: center;
@@ -474,13 +485,13 @@
       }
 
       .modal {
-        background: #1e293b;
-        border: 1px solid #334155;
+        background: #1a1a1a;
+        border: 1px solid #2d3748;
         border-radius: 12px;
         padding: 24px;
         width: 90%;
         max-width: 400px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
       }
 
       .modal-header {
@@ -493,13 +504,13 @@
       .modal-title {
         font-size: 18px;
         font-weight: 600;
-        color: #e2e8f0;
+        color: #e5e7eb;
       }
 
       .modal-close {
         background: transparent;
         border: none;
-        color: #94a3b8;
+        color: #9ca3af;
         font-size: 20px;
         cursor: pointer;
         padding: 4px;
@@ -507,7 +518,7 @@
       }
 
       .modal-close:hover {
-        color: #e2e8f0;
+        color: #e5e7eb;
       }
 
       .volume-control {
@@ -738,6 +749,10 @@
             </div>
           </div>
           <div id="events-list" class="events-list">
+            <div class="empty-state" id="empty-state">
+              <h2>No events recorded</h2>
+              <p>Events will appear here as they occur</p>
+            </div>
             <!-- Events will be dynamically inserted here -->
           </div>
         </div>
@@ -801,6 +816,16 @@
       };
       let expandedRowId = null;
       let isUserScrolling = false;
+      
+      // HTML escape function to prevent XSS
+      function escapeHtml(unsafe) {
+        return String(unsafe)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
 
       // Color palettes for unique IDs
       const colorPalette = [
@@ -972,6 +997,13 @@
 
       function renderEvent(event) {
         const eventsList = document.getElementById("events-list");
+
+        // Hide empty state if it exists
+        const emptyState = document.getElementById("empty-state");
+        if (emptyState) {
+          emptyState.style.display = "none";
+        }
+
         const eventData = typeof event.data === "string"
           ? JSON.parse(event.data)
           : event.data;
@@ -1032,22 +1064,20 @@
         row.innerHTML = `
                 <div class="col-session">
                     <span class="session-badge" style="background-color: ${sessionColor}20; color: ${sessionColor}; border: 1px solid ${sessionColor}40;">
-                        ${session.substring(0, 7)}
+                        ${escapeHtml(session.substring(0, 7))}
                     </span>
                 </div>
                 <div class="col-location">
                     <span class="location-badge" style="background-color: ${locationColor}20; color: ${locationColor}; border: 1px solid ${locationColor}40;">
-                        ${location}
+                        ${escapeHtml(location)}
                     </span>
                 </div>
-                <div class="col-time">${time}</div>
+                <div class="col-time">${escapeHtml(time)}</div>
                 <div class="col-type">
-                    <span class="event-type ${eventType}">${eventType}</span>
+                    <span class="event-type ${escapeHtml(eventType)}">${escapeHtml(eventType)}</span>
                 </div>
-                <div class="col-tool">${
-          tool.replace(/^mcp__/, "")
-        }</div>
-                <div class="col-details">${details}</div>
+                <div class="col-tool">${escapeHtml(tool.replace(/^mcp__/, ""))}</div>
+                <div class="col-details">${escapeHtml(details)}</div>
             `;
 
         // Create expanded content
@@ -1055,10 +1085,7 @@
         expanded.className = "expanded-content";
         expanded.innerHTML = `
                 <div class="data-section">
-                    <h5>Event Data</h5>
-                    <pre class="json-data">${
-          JSON.stringify(eventData, null, 2)
-        }</pre>
+                    <pre class="json-data">${escapeHtml(JSON.stringify(eventData, null, 2))}</pre>
                 </div>
             `;
 

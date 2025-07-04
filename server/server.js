@@ -109,7 +109,7 @@ const server = http.createServer(async (req, res) => {
     try {
       // Default to index.html for root path
       const filePath = url.pathname === '/' ? '/index.html' : url.pathname;
-      const uiPath = path.join(__dirname, '..', 'ui', filePath);
+      const uiPath = path.join(__dirname, '..', 'docs', filePath);
       
       // Determine content type based on file extension
       const ext = path.extname(filePath).toLowerCase().slice(1);

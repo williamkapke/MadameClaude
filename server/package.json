@@ -4,7 +4,7 @@
   "description": "Monitoring system for Claude Code hooks that captures and streams tool usage events",
   "bin": {
     "madame-claude": "./server.js",
-    "madame-claude-bridge": "./bridge.js"
+    "bridge": "./bridge.js"
   },
   "scripts": {
     "start": "node server.js",
@@ -18,5 +18,23 @@
   "devDependencies": {
     "eslint": "^8.56.0",
     "jest": "^29.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamkapke/MadameClaude.git"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "monitoring",
+    "hooks",
+    "websocket",
+    "real-time"
+  ],
+  "author": "William Kapke",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/williamkapke/MadameClaude/issues"
+  },
+  "homepage": "https://github.com/williamkapke/MadameClaude#readme"
 }
