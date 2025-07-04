@@ -43,4 +43,4 @@ out/
 # Lock files (Deno doesn't use them)
 package-lock.json
 yarn.lock
-pnpm-lock.yaml
+pnpm-lock.yamlmocks/
