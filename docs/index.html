@@ -326,7 +326,7 @@
                 <li><a href="https://github.com/williamkapke/MadameClaude#readme">Documentation</a></li>
                 <li><a href="https://github.com/williamkapke/MadameClaude">GitHub</a></li>
             </ul>
-            <a href="http://localhost:4519/" class="cta-button">Open Monitor</a>
+            <a href="http://localhost:4519/" class="cta-button" id="nav-monitor-button" style="display: none;">Open Monitor</a>
         </nav>
     </header>
 
@@ -336,8 +336,16 @@
             Watch Claude Code's tool usage in real-time. Debug, analyze, and understand
             your AI assistant's behavior with instant visual feedback.
         </p>
-        <div class="hero-buttons">
+        <div class="hero-buttons" id="server-running" style="display: none;">
             <a href="http://localhost:4519/" class="primary-button">Launch Monitor</a>
+            <a href="https://github.com/williamkapke/MadameClaude" class="secondary-button">View on GitHub</a>
+        </div>
+        <div class="hero-buttons" id="server-not-running">
+            <div style="background: #1f2937; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
+                <p style="color: #f59e0b; margin-bottom: 1rem;">⚠️ Local server is not running</p>
+                <p style="color: #9ca3af; margin-bottom: 1rem;">Start the server to access the monitor:</p>
+                <pre style="background: #111827; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>npx madame-claude</code></pre>
+            </div>
             <a href="https://github.com/williamkapke/MadameClaude" class="secondary-button">View on GitHub</a>
         </div>
         <div class="demo-container">
@@ -466,5 +474,46 @@
             <p style="color: #6b7280;">© 2024 Madame Claude. MIT License.</p>
         </div>
     </footer>
+    <script>
+        function checkServerStatus() {
+            const iframe = document.createElement('iframe');
+            iframe.src = "http://localhost:4519/";
+            iframe.style.display = "none";
+            
+            iframe.onload = () => {
+                // Server is running
+                document.getElementById('server-running').style.display = 'flex';
+                document.getElementById('server-not-running').style.display = 'none';
+                document.getElementById('nav-monitor-button').style.display = 'inline-block';
+                document.body.removeChild(iframe);
+            };
+            
+            iframe.onerror = () => {
+                // Server is not running
+                document.getElementById('server-running').style.display = 'none';
+                document.getElementById('server-not-running').style.display = 'flex';
+                document.getElementById('nav-monitor-button').style.display = 'none';
+                document.body.removeChild(iframe);
+            };
+            
+            // Set a timeout to handle cases where neither event fires
+            setTimeout(() => {
+                if (iframe.parentNode) {
+                    document.getElementById('server-running').style.display = 'none';
+                    document.getElementById('server-not-running').style.display = 'flex';
+                    document.getElementById('nav-monitor-button').style.display = 'none';
+                    document.body.removeChild(iframe);
+                }
+            }, 3000);
+            
+            document.body.appendChild(iframe);
+        }
+        
+        // Check on page load
+        checkServerStatus();
+        
+        // Check every 5 seconds
+        setInterval(checkServerStatus, 5000);
+    </script>
 </body>
 </html>

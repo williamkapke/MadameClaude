@@ -117,7 +117,10 @@ const server = http.createServer(async (req, res) => {
       };
       // Read and serve the file
       const data = await readFile(path.join(__dirname, filePath), { encoding: 'utf8' });
-      res.writeHead(200, { 'Content-Type': contentTypes[ext], });
+      res.writeHead(200, { 
+        'Content-Type': contentTypes[ext],
+        'Access-Control-Allow-Origin': '*'
+      });
       res.end(data);
       return;
     }
@@ -163,6 +166,7 @@ function broadcastMessage(message) {
     }
   }
 }
+
 
 // Start server
 server.listen(PORT, () => {
