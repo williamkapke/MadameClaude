@@ -1,11 +1,11 @@
 
-# Claudia - Claude Code Hook Monitor
+# Madame Claude - Claude Code Hook Monitor
 
-Claudia is a real-time monitoring system for Claude Code hooks that captures and streams tool usage events to a web interface. It provides visibility into Claude Code's tool usage patterns, helping developers understand and debug their AI assistant's behavior.
+Madame Claude is a real-time monitoring system for Claude Code hooks that captures and streams tool usage events to a web interface. It provides visibility into Claude Code's tool usage patterns, helping developers understand and debug their AI assistant's behavior.
 
 ## Overview
 
-Claudia consists of three components that work together to capture, process, and display Claude Code hook events:
+Madame Claude consists of three components that work together to capture, process, and display Claude Code hook events:
 
 1. **stdio2http** - Captures hook events from stdin and forwards them via HTTP
 2. **server** - Receives events and broadcasts them to connected web clients
@@ -60,21 +60,22 @@ sequenceDiagram
 
 ### Prerequisites
 
-- [Deno](https://deno.land/) installed on your system
+- [Node.js](https://nodejs.org/) installed on your system
 - Claude Code installed and configured
 
 ### Setup
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/williamkapke/claudia.git
-cd claudia
+git clone https://github.com/williamkapke/MadameClaude.git
+cd MadameClaude
 ```
 
 2. Start the server:
 ```bash
 cd server
-deno task start
+npm install
+npm start
 ```
 
 The server will start on `http://localhost:4519`
@@ -90,7 +91,7 @@ The server will start on `http://localhost:4519`
         "hooks": [
           {
             "type": "command",
-            "command": "/absolute/path/to/claudia/stdio2http/main.ts"
+            "command": "/absolute/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -101,7 +102,7 @@ The server will start on `http://localhost:4519`
         "hooks": [
           {
             "type": "command",
-            "command": "/absolute/path/to/claudia/stdio2http/main.ts"
+            "command": "/absolute/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -112,7 +113,7 @@ The server will start on `http://localhost:4519`
         "hooks": [
           {
             "type": "command",
-            "command": "/absolute/path/to/claudia/stdio2http/main.ts"
+            "command": "/absolute/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -123,7 +124,7 @@ The server will start on `http://localhost:4519`
         "hooks": [
           {
             "type": "command",
-            "command": "/absolute/path/to/claudia/stdio2http/main.ts"
+            "command": "/absolute/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -134,7 +135,7 @@ The server will start on `http://localhost:4519`
         "hooks": [
           {
             "type": "command",
-            "command": "/absolute/path/to/claudia/stdio2http/main.ts"
+            "command": "/absolute/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -143,7 +144,7 @@ The server will start on `http://localhost:4519`
 }
 ```
 
-**Note**: Replace `/absolute/path/to/claudia` with the actual path to your Claudia installation.
+**Note**: Replace `/absolute/path/to/MadameClaude` with the actual path to your Madame Claude installation.
 
 4. Open the web UI:
    - Navigate to `http://localhost:4519` in your browser
@@ -186,35 +187,29 @@ The server displays colored output in the console:
 Each component has its own test suite:
 
 ```bash
-# stdio2http tests
-cd stdio2http
-deno task test
-
-# server tests
+# Run tests
 cd server
-deno task test
+npm test
 ```
 
 ### Type Checking and Linting
 
 ```bash
-# For any component
-deno task check
-deno task lint
+# Run linting
+cd server
+npm run lint
 ```
 
 ### Project Structure
 
 ```
-claudia/
-├── stdio2http/          # Hook event capture
-│   ├── main.ts         # Main application
-│   ├── main_test.ts    # Unit tests
-│   └── deno.json       # Deno configuration
-├── server/             # Event server
-│   ├── server.ts       # HTTP/WebSocket server
-│   ├── server_test.ts  # Unit tests
-│   └── deno.json       # Deno configuration
+MadameClaude/
+├── server/             # Event server and bridge
+│   ├── server.js       # HTTP/WebSocket server
+│   ├── bridge.js       # Hook event capture
+│   ├── server.test.js  # Server tests
+│   ├── bridge.test.js  # Bridge tests
+│   └── package.json    # Node.js configuration
 ├── ui/                 # Web interface
 │   ├── index.html      # Single-page app
 │   ├── notification.mp3 # Notification sound
@@ -235,11 +230,11 @@ You can filter which tools trigger hooks using the `matcher` field:
 
 ### Custom Server URL
 
-By default, stdio2http posts to `http://localhost:4519`. You can specify a different URL:
+By default, bridge posts to `http://localhost:4519`. You can specify a different URL:
 
 ```json
 {
-  "command": "/path/to/stdio2http/main.ts http://custom-server:port"
+  "command": "/path/to/MadameClaude/server/bridge.js http://custom-server:port"
 }
 ```
 
@@ -252,7 +247,7 @@ By default, stdio2http posts to `http://localhost:4519`. You can specify a diffe
 ### No events appearing
 - Verify hooks are configured correctly in `~/.claude/settings.json`
 - Check that the server is running
-- Ensure stdio2http has the correct absolute path
+- Ensure bridge has the correct absolute path
 
 ### Sound not playing
 - Check browser permissions for audio playback

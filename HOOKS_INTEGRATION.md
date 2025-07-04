@@ -1,6 +1,6 @@
 # Claude Code Hooks Integration Guide
 
-This guide explains how to integrate the stdio2http app with Claude Code hooks
+This guide explains how to integrate the bridge app with Claude Code hooks
 to stream events to the monitoring server.
 
 ## Prerequisites
@@ -8,10 +8,10 @@ to stream events to the monitoring server.
 1. Ensure the server is running:
    ```bash
    cd server
-   deno run --allow-net server.ts
+   npm start
    ```
 
-2. Ensure Deno is installed and accessible in your PATH
+2. Ensure Node.js is installed and accessible in your PATH
 
 ## Integration Steps
 
@@ -29,7 +29,7 @@ Add hooks configuration to your Claude Code settings file
         "hooks": [
           {
             "type": "command",
-            "command": "deno run --allow-net --allow-read /absolute/path/to/claudia/stdio2http/main.ts"
+            "command": "/absolute/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -61,7 +61,7 @@ Use matcher patterns to filter which tools trigger hooks:
         "hooks": [
           {
             "type": "command",
-            "command": "deno run --allow-net --allow-read /path/to/stdio2http/main.ts"
+            "command": "/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -102,7 +102,7 @@ When Claude Code executes a hook, it pipes JSON data to stdin:
 
 2. In another terminal, test stdio2http directly:
    ```bash
-   echo '{"test": "message"}' | deno run --allow-net --allow-read stdio2http/main.ts
+   echo '{"test": "message"}' | node server/bridge.js
    ```
 
 3. Configure Claude Code with the hook and run any command
@@ -135,7 +135,7 @@ Track all file changes during a coding session:
         "hooks": [
           {
             "type": "command",
-            "command": "deno run --allow-net --allow-read /path/to/stdio2http/main.ts"
+            "command": "/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -157,7 +157,7 @@ Log all executed commands:
         "hooks": [
           {
             "type": "command",
-            "command": "deno run --allow-net --allow-read /path/to/stdio2http/main.ts"
+            "command": "/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }
@@ -179,7 +179,7 @@ Monitor when agents complete tasks:
         "hooks": [
           {
             "type": "command",
-            "command": "deno run --allow-net --allow-read /path/to/stdio2http/main.ts"
+            "command": "/path/to/MadameClaude/server/bridge.js"
           }
         ]
       }

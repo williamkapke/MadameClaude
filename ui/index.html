@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Claudia - Compact List View</title>
+    <title>Madame Claude - Hook Watcher</title>
     <style>
       /* Reset and Base Styles */
       * {
@@ -31,16 +31,23 @@
       header {
         background: #1e293b;
         border-bottom: 1px solid #334155;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
+        padding: 6px 20px;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
         align-items: center;
+      }
+
+      .header-title {
+        font-size: 16px;
+        font-weight: 500;
+        color: #d2dadd;
+        text-align: center;
       }
 
       h1 {
         font-size: 20px;
         font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -48,6 +55,7 @@
       .settings-btn {
         background: transparent;
         border: none;
+        justify-self: end;
         color: #94a3b8;
         cursor: pointer;
         padding: 8px;
@@ -203,7 +211,7 @@
 
       .events-header {
         display: grid;
-        grid-template-columns: 70px 80px 62px 100px 180px 1fr;
+        grid-template-columns: 70px 90px 62px 100px 180px 1fr;
         background: #1e293b;
         padding: 8px 6px;
         border-bottom: 1px solid #334155;
@@ -233,7 +241,7 @@
       /* Event Row */
       .event-row {
         display: grid;
-        grid-template-columns: 70px 80px 62px 100px 180px 1fr;
+        grid-template-columns: 70px 90px 62px 100px 180px 1fr;
         background: #1e293b;
         padding: 8px 6px;
         border: 1px solid #334155;
@@ -293,7 +301,7 @@
         color: #64748b;
         font-family: "SF Mono", Monaco, monospace;
       }
-      
+
       .col-location {
         font-size: 11px;
         color: #f1f5f9;
@@ -302,7 +310,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-      
+
       /* Color badges for session and location */
       .session-badge, .location-badge {
         display: inline-block;
@@ -578,7 +586,8 @@
   <body>
     <div class="container">
       <header>
-        <h1>Claudia</h1>
+        <h1>Madame Claude</h1>
+        <div class="header-title">Hook Monitor</div>
         <button class="settings-btn" onclick="openSettings()" title="Settings">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
@@ -742,32 +751,32 @@
           <h3 class="modal-title">Sound Settings</h3>
           <button class="modal-close" onclick="closeSettings()">×</button>
         </div>
-        
+
         <div class="volume-control">
           <div class="volume-label">
             <span>Notification Sound</span>
             <span class="volume-value" id="notification-volume-value">50%</span>
           </div>
-          <input type="range" class="volume-slider" id="notification-volume" 
-                 min="0" max="100" value="50" 
+          <input type="range" class="volume-slider" id="notification-volume"
+                 min="0" max="100" value="50"
                  oninput="updateVolume('notification', this.value)">
           <label class="mute-checkbox">
-            <input type="checkbox" id="notification-mute" 
+            <input type="checkbox" id="notification-mute"
                    onchange="toggleMute('notification', this.checked)">
             Mute notification sounds
           </label>
         </div>
-        
+
         <div class="volume-control">
           <div class="volume-label">
             <span>Stop Sound</span>
             <span class="volume-value" id="stop-volume-value">50%</span>
           </div>
-          <input type="range" class="volume-slider" id="stop-volume" 
-                 min="0" max="100" value="50" 
+          <input type="range" class="volume-slider" id="stop-volume"
+                 min="0" max="100" value="50"
                  oninput="updateVolume('stop', this.value)">
           <label class="mute-checkbox">
-            <input type="checkbox" id="stop-mute" 
+            <input type="checkbox" id="stop-mute"
                    onchange="toggleMute('stop', this.checked)">
             Mute stop sounds
           </label>
@@ -792,7 +801,7 @@
       };
       let expandedRowId = null;
       let isUserScrolling = false;
-      
+
       // Color palettes for unique IDs
       const colorPalette = [
         '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
@@ -800,11 +809,11 @@
         '#06b6d4', '#a855f7', '#eab308', '#0ea5e9', '#d946ef',
         '#22c55e', '#f43f5e', '#3b82f6', '#a78bfa', '#fbbf24'
       ];
-      
+
       const sessionColors = new Map();
       const locationColors = new Map();
       let colorIndex = 0;
-      
+
       function getColorForId(id, map) {
         if (!map.has(id)) {
           map.set(id, colorPalette[colorIndex % colorPalette.length]);
@@ -812,7 +821,7 @@
         }
         return map.get(id);
       }
-      
+
       function extractLocationName(transcriptPath) {
         if (!transcriptPath) return '-';
         // Extract the project location name from the transcript path
@@ -826,7 +835,7 @@
         }
         return '-';
       }
-      
+
       // Sound settings
       let soundSettings = {
         notification: {
@@ -838,7 +847,7 @@
           muted: false
         }
       };
-      
+
       // Load settings from localStorage
       function loadSettings() {
         const saved = localStorage.getItem('claudia-sound-settings');
@@ -848,13 +857,13 @@
           document.getElementById('notification-volume').value = soundSettings.notification.volume * 100;
           document.getElementById('notification-volume-value').textContent = Math.round(soundSettings.notification.volume * 100) + '%';
           document.getElementById('notification-mute').checked = soundSettings.notification.muted;
-          
+
           document.getElementById('stop-volume').value = soundSettings.stop.volume * 100;
           document.getElementById('stop-volume-value').textContent = Math.round(soundSettings.stop.volume * 100) + '%';
           document.getElementById('stop-mute').checked = soundSettings.stop.muted;
         }
       }
-      
+
       // Save settings to localStorage
       function saveSettings() {
         localStorage.setItem('claudia-sound-settings', JSON.stringify(soundSettings));
@@ -895,7 +904,7 @@
       // Sound effect functions
       function playNotificationSound() {
         if (soundSettings.notification.muted) return;
-        
+
         const audio = new Audio('notification.mp3');
         audio.volume = soundSettings.notification.volume;
         audio.play().catch((err) => {
@@ -905,35 +914,35 @@
 
       function playStopSound() {
         if (soundSettings.stop.muted) return;
-        
+
         const audio = new Audio('stop.mp3');
         audio.volume = soundSettings.stop.volume;
         audio.play().catch((err) => {
           console.warn('Could not play stop sound:', err);
         });
       }
-      
+
       // Settings modal functions
       let volumeDebounceTimer = null;
-      
+
       function openSettings() {
         document.getElementById('settings-modal').classList.add('active');
       }
-      
+
       function closeSettings() {
         document.getElementById('settings-modal').classList.remove('active');
       }
-      
+
       function updateVolume(type, value) {
         soundSettings[type].volume = value / 100;
         document.getElementById(`${type}-volume-value`).textContent = value + '%';
         saveSettings();
-        
+
         // Clear existing timer
         if (volumeDebounceTimer) {
           clearTimeout(volumeDebounceTimer);
         }
-        
+
         // Set new timer to play sound after user stops adjusting
         volumeDebounceTimer = setTimeout(() => {
           // Play a preview sound
@@ -944,7 +953,7 @@
           }
         }, 300); // Wait 300ms after last change
       }
-      
+
       function toggleMute(type, muted) {
         soundSettings[type].muted = muted;
         saveSettings();
@@ -1062,13 +1071,13 @@
 
         // Check if user is at bottom before adding new element
         const shouldAutoScroll = isAtBottom();
-        
+
         // Add to DOM
         eventsList.appendChild(container);
 
         // Apply filters
         applyFilters();
-        
+
         // Auto-scroll to bottom if user was already at bottom
         if (shouldAutoScroll) {
           scrollToBottom();
@@ -1100,7 +1109,7 @@
         filters.session = value.toLowerCase();
         applyFilters();
       }
-      
+
       function filterByLocation(value) {
         filters.location = value.toLowerCase();
         applyFilters();
@@ -1173,29 +1182,29 @@
 
       // Connect on load
       connectWebSocket();
-      
+
       // Load settings on page load
       loadSettings();
-      
+
       // Close modal when clicking outside
       document.getElementById('settings-modal').addEventListener('click', (e) => {
         if (e.target.id === 'settings-modal') {
           closeSettings();
         }
       });
-      
+
       // Auto-scroll functions
       function isAtBottom() {
         const eventsList = document.getElementById('events-list');
         const threshold = 50; // Pixels from bottom to consider "at bottom"
         return eventsList.scrollHeight - eventsList.scrollTop - eventsList.clientHeight < threshold;
       }
-      
+
       function scrollToBottom() {
         const eventsList = document.getElementById('events-list');
         eventsList.scrollTop = eventsList.scrollHeight;
       }
-      
+
       // Track user scrolling
       let scrollTimer = null;
       document.getElementById('events-list').addEventListener('scroll', () => {
@@ -1203,10 +1212,10 @@
         if (scrollTimer) {
           clearTimeout(scrollTimer);
         }
-        
+
         // Set flag to indicate user is scrolling
         isUserScrolling = true;
-        
+
         // Reset flag after scrolling stops
         scrollTimer = setTimeout(() => {
           isUserScrolling = false;
