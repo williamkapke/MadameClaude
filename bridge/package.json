@@ -1,0 +1,22 @@
+{
+  "name": "madame-claude-bridge",
+  "version": "1.0.0",
+  "description": "Bridge for streaming Claude Code hook events to Madame Claude server",
+  "main": "bridge.js",
+  "bin": {
+    "madame-claude-bridge": "bridge.js"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "hooks",
+    "madame-claude",
+    "monitoring"
+  ],
+  "author": "William Kapke",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/williamkapke/MadameClaude.git"
+  }
+}

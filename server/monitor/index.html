@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madame Claude - Hook Watcher</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.svg">
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="/logo.svg" alt="Madame Claude" style="height: 32px; width: 32px;">
+          <h1>Madame Claude</h1>
+        </div>
+        <div class="header-title">Hook Monitor</div>
+        <button class="settings-btn" onclick="openSettings()" title="Settings">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="main-content">
+        <div class="events-container">
+          <div class="events-header">
+            <div class="col-session">
+              <input
+                type="text"
+                id="session-filter"
+                class="header-filter"
+                placeholder="Session"
+                onkeyup="filterBySession(this.value)"
+              >
+            </div>
+            <div class="col-location">
+              <input
+                type="text"
+                id="location-filter"
+                class="header-filter"
+                placeholder="Location"
+                onkeyup="filterByLocation(this.value)"
+              >
+            </div>
+            <div class="col-time">Time</div>
+            <div class="col-type">
+              <div class="type-dropdown">
+                <button
+                  class="dropdown-toggle"
+                  onclick="toggleTypeDropdown()"
+                  id="type-dropdown-btn"
+                >
+                  Type
+                  <svg
+                    width="10"
+                    height="10"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    style="margin-left: 4px"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <div
+                  class="dropdown-menu"
+                  id="type-dropdown-menu"
+                  style="display: none"
+                >
+                  <label class="dropdown-item">
+                    <span>All Events</span>
+                    <input
+                      type="checkbox"
+                      class="toggle-switch"
+                      checked
+                      onchange="toggleAllFilters(this)"
+                    >
+                  </label>
+                  <div class="dropdown-separator"></div>
+                  <label class="dropdown-item">
+                    <span>PreToolUse</span>
+                    <input
+                      type="checkbox"
+                      class="toggle-switch"
+                      checked
+                      data-filter="PreToolUse"
+                      onchange="toggleFilter(this)"
+                    >
+                  </label>
+                  <label class="dropdown-item">
+                    <span>PostToolUse</span>
+                    <input
+                      type="checkbox"
+                      class="toggle-switch"
+                      checked
+                      data-filter="PostToolUse"
+                      onchange="toggleFilter(this)"
+                    >
+                  </label>
+                  <label class="dropdown-item">
+                    <span>Notification</span>
+                    <input
+                      type="checkbox"
+                      class="toggle-switch"
+                      checked
+                      data-filter="Notification"
+                      onchange="toggleFilter(this)"
+                    >
+                  </label>
+                  <label class="dropdown-item">
+                    <span>Stop</span>
+                    <input
+                      type="checkbox"
+                      class="toggle-switch"
+                      checked
+                      data-filter="Stop"
+                      onchange="toggleFilter(this)"
+                    >
+                  </label>
+                  <label class="dropdown-item">
+                    <span>SubagentStop</span>
+                    <input
+                      type="checkbox"
+                      class="toggle-switch"
+                      checked
+                      data-filter="SubagentStop"
+                      onchange="toggleFilter(this)"
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-tool">
+              <input
+                type="text"
+                id="tool-filter"
+                class="header-filter"
+                placeholder="Tool/Action"
+                onkeyup="filterByTool(this.value)"
+              >
+            </div>
+            <div class="col-details">
+              <span>Details</span>
+              <button
+                class="btn-clear-icon"
+                onclick="clearMessages()"
+                title="Clear all"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4-1a1 1 0 011 1v6a1 1 0 11-2 0V8a1 1 0 011-1z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div id="events-list" class="events-list">
+            <div class="empty-state" id="empty-state">
+              <h2>No events recorded</h2>
+              <p>Events will appear here as they occur</p>
+            </div>
+            <!-- Events will be dynamically inserted here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Sound Settings</h3>
+          <button class="modal-close" onclick="closeSettings()">×</button>
+        </div>
+
+        <div class="volume-control">
+          <div class="volume-label">
+            <span>Notification Sound</span>
+            <span class="volume-value" id="notification-volume-value">50%</span>
+          </div>
+          <input type="range" class="volume-slider" id="notification-volume"
+                 min="0" max="100" value="50"
+                 oninput="updateVolume('notification', this.value)">
+          <label class="mute-checkbox">
+            <input type="checkbox" id="notification-mute"
+                   onchange="toggleMute('notification', this.checked)">
+            Mute notification sounds
+          </label>
+        </div>
+
+        <div class="volume-control">
+          <div class="volume-label">
+            <span>Stop Sound</span>
+            <span class="volume-value" id="stop-volume-value">50%</span>
+          </div>
+          <input type="range" class="volume-slider" id="stop-volume"
+                 min="0" max="100" value="50"
+                 oninput="updateVolume('stop', this.value)">
+          <label class="mute-checkbox">
+            <input type="checkbox" id="stop-mute"
+                   onchange="toggleMute('stop', this.checked)">
+            Mute stop sounds
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
