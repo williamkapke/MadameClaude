@@ -17,23 +17,23 @@ Configure Claude Code hooks in `~/.claude/settings.json`:
   "hooks": {
     "PreToolUse": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
+      "hooks": [{ "type": "command", "command": "npx madame-claude-bridge" } ]
     }],
     "PostToolUse": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
+      "hooks": [{ "type": "command", "command": "npx madame-claude-bridge" } ]
     }],
     "Notification": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
+      "hooks": [{ "type": "command", "command": "npx madame-claude-bridge" } ]
     }],
     "Stop": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
+      "hooks": [{ "type": "command", "command": "npx madame-claude-bridge" } ]
     }],
     "SubagentStop": [{
       "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
+      "hooks": [{ "type": "command", "command": "npx madame-claude-bridge" } ]
     }]
   }
 }
