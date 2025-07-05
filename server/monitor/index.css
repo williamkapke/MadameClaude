@@ -46,6 +46,32 @@
         -webkit-text-fill-color: transparent;
       }
 
+      .logo-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        justify-self: start;
+      }
+
+      .logo-credit {
+        position: absolute;
+        bottom: -5px;
+        right: 0;
+        font-size: 8px;
+        color: #9ca3af;
+        white-space: nowrap;
+      }
+
+      .logo-credit a {
+        color: #709ae2;
+        text-decoration: none;
+      }
+
+      .logo-credit a:hover {
+        color: #80a6dd;
+      }
+
       .settings-btn {
         background: transparent;
         border: none;

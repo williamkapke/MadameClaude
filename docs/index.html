@@ -48,6 +48,31 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .logo-credit {
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            font-size: 8px;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+
+        .logo-credit a {
+            color: #709ae2;
+            text-decoration: none;
+        }
+
+        .logo-credit a:hover {
+            color: #80a6dd
+        }
+
         .nav-links {
             display: flex;
             gap: 2rem;
@@ -87,7 +112,7 @@
 
         .hero h1 {
             font-size: 3.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             background: linear-gradient(to right, #ffffff 0%, #9ca3af 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -96,10 +121,8 @@
         .hero .subtitle {
             font-size: 1.25rem;
             color: #6b7280;
-            margin-bottom: 3rem;
             max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 0 auto 0.5rem;
         }
 
         .hero-buttons {
@@ -110,6 +133,7 @@
         }
 
         .primary-button {
+            display: inline-block;
             background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
             color: white;
             padding: 0.75rem 2rem;
@@ -219,7 +243,6 @@
         .how-it-works h2 {
             text-align: center;
             font-size: 2.5rem;
-            margin-bottom: 3rem;
         }
 
         .steps {
@@ -256,36 +279,6 @@
             color: #9ca3af;
         }
 
-        /* Code Example */
-        .code-section {
-            padding: 6rem 2rem;
-            background: #0f0f0f;
-        }
-
-        .code-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .code-section h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-        }
-
-        .code-block {
-            background: #1a1a1a;
-            border: 1px solid #2d3748;
-            border-radius: 8px;
-            padding: 1.5rem;
-            overflow-x: auto;
-        }
-
-        .code-block pre {
-            color: #e5e7eb;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-        }
 
         /* Footer */
         footer {
@@ -315,14 +308,119 @@
         .footer-links a:hover {
             color: #dc2626;
         }
+
+        /* Server status styles */
+        .server-status-container {
+            text-align: center;
+        }
+
+        .server-status {
+            color: #ef4444;
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .server-status.running {
+            color: #10b981;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: currentColor;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .terminal-container {
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .terminal-box {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 12px;
+            overflow: hidden;
+            font-family: 'SF Mono', Monaco, 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Source Code Pro', monospace;
+        }
+
+        .terminal-header {
+            background: #2d3748;
+            padding: 3px 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #4b5563;
+        }
+
+        .terminal-prompt {
+            color: #9ca3af;
+            font-size: 0.875rem;
+        }
+
+        .terminal-body {
+            padding: 1rem 1.5rem;
+        }
+
+        .terminal-command {
+            color: #e5e7eb;
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .copy-button {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.875rem;
+        }
+
+        .copy-button:hover {
+            color: #e5e7eb;
+        }
+
+        .copy-button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .copy-feedback {
+            position: absolute;
+            top: -2rem;
+            right: 0;
+            background: #374151;
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .terminal-wrapper {
+            position: relative;
+        }
     </style>
 </head>
 <body>
     <header>
         <nav>
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div class="logo-wrapper">
                 <img src="logo.svg" alt="Madame Claude" style="height: 32px; width: 32px;">
                 <div class="logo">Madame Claude</div>
+                <div class="logo-credit">
+                    by <a href="https://github.com/williamkapke" target="_blank">William Kapke</a>
+                </div>
             </div>
             <ul class="nav-links">
                 <li><a href="#features">Features</a></li>
@@ -330,7 +428,6 @@
                 <li><a href="https://github.com/williamkapke/MadameClaude#readme">Documentation</a></li>
                 <li><a href="https://github.com/williamkapke/MadameClaude">GitHub</a></li>
             </ul>
-            <a href="http://localhost:4519/" class="cta-button" id="nav-monitor-button" style="display: none;">Open Monitor</a>
         </nav>
     </header>
 
@@ -340,17 +437,43 @@
             Watch Claude Code's tool usage in real-time. Debug, analyze, and understand
             your AI assistant's behavior with instant visual feedback.
         </p>
-        <div class="hero-buttons" id="server-running" style="display: none;">
-            <a href="http://localhost:4519/" class="primary-button">Launch Monitor</a>
-            <a href="https://github.com/williamkapke/MadameClaude" class="secondary-button">View on GitHub</a>
-        </div>
-        <div class="hero-buttons" id="server-not-running">
-            <div style="background: #1f2937; padding: 1.5rem; border-radius: 8px; margin: 1rem 0;">
-                <p style="color: #f59e0b; margin-bottom: 1rem;">⚠️ Local server is not running</p>
-                <p style="color: #9ca3af; margin-bottom: 1rem;">Start the server to access the monitor:</p>
-                <pre style="background: #111827; padding: 1rem; border-radius: 4px; overflow-x: auto;"><code>npx madame-claude</code></pre>
+        <div id="server-status" style="margin: 0 0 4rem">
+            <!-- Server running state -->
+            <div id="server-running" class="server-status-container" style="display: none;">
+                <p class="server-status running">
+                    <span class="status-dot"></span>
+                    Server Detected...
+                </p>
+                <a href="http://localhost:4519/" class="primary-button">Open Hook Monitor</a>
             </div>
-            <a href="https://github.com/williamkapke/MadameClaude" class="secondary-button">View on GitHub</a>
+
+            <!-- Server not running state -->
+            <div id="server-not-running" class="server-status-container" style="display: none;">
+                <p class="server-status">
+                    <span class="status-dot"></span>
+                    Server Not Detected. Start with:
+                </p>
+                <div class="terminal-container">
+                    <div class="terminal-wrapper">
+                        <div class="terminal-box">
+                            <div class="terminal-header">
+                                <span class="terminal-prompt">bash</span>
+                                <button onclick="copyCommand()" class="copy-button" title="Copy to clipboard">
+                                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copy
+                                </button>
+                            </div>
+                            <div class="terminal-body">
+                                <div class="terminal-command">npx madame-claude</div>
+                            </div>
+                        </div>
+                        <span id="copy-feedback" class="copy-feedback">Copied!</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="demo-container">
             <img src="monitor.jpg" alt="Madame Claude Interface" class="demo-image">
@@ -397,74 +520,37 @@
 
     <section class="how-it-works">
         <h2>How It Works</h2>
-        <div class="steps">
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h3>Start the Server</h3>
-                    <p>Run the Madame Claude server with a simple npm command.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h3>Configure Hooks</h3>
-                    <p>Add Madame Claude to your Claude Code hooks configuration.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h3>Open the Dashboard</h3>
-                    <p>Navigate to localhost:4519 to see the real-time event stream.</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                    <h3>Monitor Events</h3>
-                    <p>Watch Claude Code's tool usage in real-time with detailed insights.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        <svg viewBox="0 0 800 200" style="max-width: 800px; margin: 0 auto; display: block;">
+            <!-- Claude Code box -->
+            <rect x="20" y="60" width="180" height="80" rx="8" fill="#2d3748" stroke="#4b5563" stroke-width="2"/>
+            <text x="110" y="95" text-anchor="middle" fill="#e5e7eb" font-size="16" font-weight="500">Claude Code</text>
+            <text x="110" y="115" text-anchor="middle" fill="#9ca3af" font-size="14">Executes hooks</text>
 
-    <section class="code-section">
-        <div class="code-container">
-            <h2>Easy Setup</h2>
-            <p style="color: #9ca3af; margin-bottom: 1.5rem; text-align: center;">
-                Add this configuration to your Claude Code settings file:<br>
-                <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">~/.claude/settings.json</code> (macOS/Linux) or
-                <code style="background: #1f2937; padding: 0.25rem 0.5rem; border-radius: 4px;">%USERPROFILE%\.claude\settings.json</code> (Windows)
-            </p>
-            <div class="code-block">
-                <pre>{
-  "hooks": {
-    "PreToolUse": [{
-      "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
-    }],
-    "PostToolUse": [{
-      "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
-    }],
-    "Notification": [{
-      "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
-    }],
-    "Stop": [{
-      "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
-    }],
-    "SubagentStop": [{
-      "matcher": ".*",
-      "hooks": [{ "type": "command", "command": "npx -p madame-claude bridge" } ]
-    }]
-  }
-}
-</pre>
-            </div>
-        </div>
+            <!-- Arrow 1 -->
+            <line x1="200" y1="100" x2="270" y2="100" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="235" y="90" text-anchor="middle" fill="#9ca3af" font-size="10">STDIO</text>
+
+            <!-- Bridge box -->
+            <rect x="270" y="60" width="180" height="80" rx="8" fill="#2d3748" stroke="#4b5563" stroke-width="2"/>
+            <text x="360" y="95" text-anchor="middle" fill="#e5e7eb" font-size="16" font-weight="500">Bridge</text>
+            <text x="360" y="115" text-anchor="middle" fill="#9ca3af" font-size="14">Forwards to server</text>
+
+            <!-- Arrow 2 -->
+            <line x1="450" y1="100" x2="520" y2="100" stroke="#6b7280" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <text x="485" y="90" text-anchor="middle" fill="#9ca3af" font-size="10">HTTP POST</text>
+
+            <!-- Madame Claude box -->
+            <rect x="520" y="60" width="180" height="80" rx="8" fill="#991b1b" stroke="#dc2626" stroke-width="2"/>
+            <text x="610" y="95" text-anchor="middle" fill="#ffffff" font-size="16" font-weight="500">Madame Claude</text>
+            <text x="610" y="115" text-anchor="middle" fill="#fca5a5" font-size="14">Real-time UI</text>
+
+            <!-- Arrow marker definition -->
+            <defs>
+                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                    <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+                </marker>
+            </defs>
+        </svg>
     </section>
 
     <footer>
@@ -479,45 +565,78 @@
         </div>
     </footer>
     <script>
-        function checkServerStatus() {
-            const iframe = document.createElement('iframe');
-            iframe.src = "http://localhost:4519/";
-            iframe.style.display = "none";
-            
-            iframe.onload = () => {
-                // Server is running
-                document.getElementById('server-running').style.display = 'flex';
-                document.getElementById('server-not-running').style.display = 'none';
-                document.getElementById('nav-monitor-button').style.display = 'inline-block';
-                document.body.removeChild(iframe);
-            };
-            
-            iframe.onerror = () => {
-                // Server is not running
-                document.getElementById('server-running').style.display = 'none';
-                document.getElementById('server-not-running').style.display = 'flex';
-                document.getElementById('nav-monitor-button').style.display = 'none';
-                document.body.removeChild(iframe);
-            };
-            
-            // Set a timeout to handle cases where neither event fires
-            setTimeout(() => {
-                if (iframe.parentNode) {
-                    document.getElementById('server-running').style.display = 'none';
-                    document.getElementById('server-not-running').style.display = 'flex';
-                    document.getElementById('nav-monitor-button').style.display = 'none';
-                    document.body.removeChild(iframe);
-                }
-            }, 3000);
-            
-            document.body.appendChild(iframe);
+        function isBrave() {
+            return navigator.brave && navigator.brave.isBrave && navigator.brave.isBrave.name === 'isBrave';
         }
-        
+
+        function checkServerStatus() {
+            const serverRunning = document.getElementById('server-running');
+            const serverNotRunning = document.getElementById('server-not-running');
+
+            // If Brave, just show not running state
+            if (isBrave()) {
+                serverRunning.style.display = 'none';
+                serverNotRunning.style.display = 'block';
+                // Hide the server status text for Brave
+                const statusText = serverNotRunning.querySelector('.server-status');
+                if (statusText) statusText.style.display = 'none';
+                return;
+            }
+
+            // For other browsers, try to fetch
+            fetch('http://localhost:4519/hooks')
+                .then(response => {
+                    if (response.ok) {
+                        serverRunning.style.display = 'block';
+                        serverNotRunning.style.display = 'none';
+                    } else {
+                        throw new Error('Server responded with error');
+                    }
+                })
+                .catch(() => {
+                    serverRunning.style.display = 'none';
+                    serverNotRunning.style.display = 'block';
+                    // Show the server status text for non-Brave browsers
+                    const statusText = serverNotRunning.querySelector('.server-status');
+                    if (statusText) statusText.style.display = 'block';
+                });
+        }
+
+        function copyCommand() {
+            const command = 'npx madame-claude';
+            const feedback = document.getElementById('copy-feedback');
+
+            navigator.clipboard.writeText(command).then(() => {
+                showCopyFeedback();
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = command;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showCopyFeedback();
+            });
+        }
+
+        function showCopyFeedback() {
+            const feedback = document.getElementById('copy-feedback');
+            if (feedback) {
+                feedback.style.opacity = '1';
+                setTimeout(() => {
+                    feedback.style.opacity = '0';
+                }, 2000);
+            }
+        }
+
         // Check on page load
         checkServerStatus();
-        
-        // Check every 5 seconds
-        setInterval(checkServerStatus, 5000);
+
+        // Check every 5 seconds (skip for Brave)
+        if (!isBrave()) {
+            setInterval(checkServerStatus, 5000);
+        }
     </script>
 </body>
 </html>

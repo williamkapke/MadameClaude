@@ -106,15 +106,6 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Check for server status probe
-  if (req.method === 'GET' && url.pathname === '/' && url.searchParams.has('probe')) {
-    res.writeHead(302, { 
-      'Location': '/',
-      'Access-Control-Allow-Origin': '*'
-    });
-    res.end();
-    return;
-  }
 
   // Handle /hooks endpoint (GET and POST)
   if (url.pathname === '/hooks') {
