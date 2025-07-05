@@ -7,7 +7,7 @@ const { WebSocketServer } = require('ws');
 const { handleHooksRequest } = require('./hooks-handler');
 
 const PORT = process.env.PORT || 4519;
-const validPaths = ['/index.html', '/notification.mp3', '/stop.mp3', '/logo.svg'];
+const validPaths = ['/index.html', '/notification.mp3', '/stop.mp3', '/logo.svg', '/index.css', '/index.js'];
 
 // Store connected WebSocket clients
 const wsClients = new Set();
@@ -132,10 +132,14 @@ const server = http.createServer(async (req, res) => {
         'html': 'text/html',
         'mp3': 'audio/mpeg',
         'svg': 'image/svg+xml',
+        'css': 'text/css',
+        'js': 'application/javascript',
       };
+      // All files are now in the monitor folder
+      const actualPath = path.join(__dirname, 'monitor', filePath);
       // Read and serve the file
       const encoding = ext === 'mp3' ? null : 'utf8';
-      const data = await readFile(path.join(__dirname, filePath), encoding ? { encoding } : {});
+      const data = await readFile(actualPath, encoding ? { encoding } : {});
       res.writeHead(200, { 
         'Content-Type': contentTypes[ext],
         'Access-Control-Allow-Origin': '*'

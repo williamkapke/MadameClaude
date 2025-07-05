@@ -110,7 +110,7 @@ function addMadameClaudeHooks(hooks) {
   const eventTypes = ['PreToolUse', 'PostToolUse', 'Notification', 'Stop', 'SubagentStop'];
   const madameClaudeHook = {
     type: 'command',
-    command: 'npx -p madame-claude bridge'
+    command: 'npx madame-claude-bridge'
   };
   
   const updatedHooks = hooks ? { ...hooks } : {};
