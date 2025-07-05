@@ -2,6 +2,8 @@
 
 Real-time monitoring for Claude Code hooks.
 
+![screenshot.jpg](screenshot.webp)
+
 ## Usage
 
 Start the server:
@@ -39,15 +41,6 @@ Configure Claude Code hooks in `~/.claude/settings.json`:
 
 
 Open http://localhost:4519 to view events.
-
-## Development
-
-```bash
-npm install
-npm start     # Run server
-npm test      # Run tests
-npm run dev   # Run with auto-reload
-```
 
 ## License
 
