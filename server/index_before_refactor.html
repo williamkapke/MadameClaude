@@ -450,7 +450,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100%;
+        padding: 3rem 0;
         text-align: center;
         color: #6b7280;
       }
@@ -465,6 +465,218 @@
       .empty-state p {
         font-size: 1rem;
         color: #6b7280;
+      }
+
+      /* Hooks Display */
+      .hooks-display {
+        background: #1a1a1a;
+        border: 1px solid #2d3748;
+        border-radius: 8px;
+        padding: 1rem;
+        margin: 0.5rem auto;
+        width: max-content;
+        max-width: calc(100% - 1rem);
+      }
+
+      .hooks-display h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #e5e7eb;
+        margin: 0 0 1.25rem 0;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .hooks-file-actions {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+        position: relative;
+      }
+
+      /* Getting started arrow */
+      .getting-started-arrow {
+        position: absolute;
+        left: 40%;
+        top: 0;
+        transform: translateX(150px);
+        display: flex;
+        align-items: center;
+        pointer-events: none;
+        animation: fadeInOut 2s ease-in-out infinite;
+        height: 100%;
+      }
+
+      .getting-started-text {
+        color: #dc2626;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-align: left;
+        line-height: 1.2;
+      }
+
+      .getting-started-arrow::before {
+        content: '←';
+        font-size: 1.25rem;
+        color: #dc2626;
+        margin-right: 0.5rem;
+      }
+
+      @keyframes fadeInOut {
+        0%, 100% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .hooks-remove-section {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #334155;
+        text-align: center;
+      }
+
+      .hooks-btn {
+        background: transparent;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: inherit;
+      }
+
+      .hooks-btn:hover {
+        background: #1f2937;
+        color: #e5e7eb;
+        border-color: #475569;
+      }
+
+      .hooks-btn-setup {
+        border-color: #475569;
+        color: #94a3b8;
+      }
+
+      .hooks-btn-setup:hover {
+        background: #334155;
+        color: #e5e7eb;
+        border-color: #64748b;
+      }
+
+      .hooks-btn-remove {
+        border-color: #991b1b;
+        color: #f87171;
+      }
+
+      .hooks-btn-remove:hover {
+        background: #991b1b;
+        color: #fee2e2;
+        border-color: #991b1b;
+      }
+
+      .hooks-file {
+        border-radius: 6px;
+        padding: 0.75rem 0;
+        margin-bottom: 1rem;
+      }
+
+      .hooks-file:last-child {
+        margin-bottom: 0;
+      }
+
+      .hooks-file-title {
+        font-size: 0.875rem;
+        font-weight: 700;
+        color: #f3f4f6;
+        margin-bottom: 0.75rem;
+        font-family: "SF Mono", Monaco, monospace;
+        text-align: center;
+        background: #1e293b;
+        padding: 0.375rem 0.75rem;
+      }
+
+      .hooks-empty {
+        font-size: 0.75rem;
+        color: #6b7280;
+        font-style: italic;
+      }
+
+      .hooks-table {
+        display: table;
+        width: 100%;
+        font-size: 0.75rem;
+        table-layout: auto;
+        margin-top: 0.5rem;
+      }
+
+      .hooks-row {
+        display: table-row;
+      }
+
+      .hooks-cell {
+        display: table-cell;
+        padding: 0.25rem 0.5rem;
+        vertical-align: top;
+        color: #e5e7eb;
+      }
+
+      .hooks-cell:first-child {
+        width: 100px;
+      }
+
+      .hooks-cell:nth-child(2) {
+        width: 60px;
+        font-family: "SF Mono", Monaco, monospace;
+        color: #94a3b8;
+      }
+
+      .hooks-cell:last-child {
+        font-family: "SF Mono", Monaco, monospace;
+        color: #94a3b8;
+        word-break: break-word;
+        min-width: 200px;
+      }
+
+      /* Event type colors in hooks display */
+      .hooks-type {
+        display: inline-block;
+        padding: 1px 6px;
+        border-radius: 3px;
+        font-size: 10px;
+        font-weight: 600;
+        /* Default/unknown event type styling */
+        background: #374151;
+        color: #d1d5db;
+      }
+
+      .hooks-type.PreToolUse {
+        background: #1e40af;
+        color: #dbeafe;
+      }
+
+      .hooks-type.PostToolUse {
+        background: #065f46;
+        color: #d1fae5;
+      }
+
+      .hooks-type.Notification {
+        background: #92400e;
+        color: #fed7aa;
+      }
+
+      .hooks-type.Stop {
+        background: #991b1b;
+        color: #fee2e2;
+      }
+
+      .hooks-type.SubagentStop {
+        background: #6b21a8;
+        color: #e9d5ff;
       }
 
       /* Modal Styles */
@@ -757,6 +969,18 @@
               <h2>No events recorded</h2>
               <p>Events will appear here as they occur</p>
             </div>
+
+            <!-- Hooks Configuration Display -->
+            <div class="hooks-display" id="hooks-display">
+              <h3>Hook Configuration</h3>
+              <div id="hooks-content">
+                <p>Loading hooks configuration...</p>
+              </div>
+              <div class="hooks-remove-section" id="hooks-remove-section" style="display: none;">
+                <button class="hooks-btn hooks-btn-remove" onclick="removeHooks()">Remove all Madame Claude Hooks</button>
+              </div>
+            </div>
+
             <!-- Events will be dynamically inserted here -->
           </div>
         </div>
@@ -820,7 +1044,7 @@
       };
       let expandedRowId = null;
       let isUserScrolling = false;
-      
+
       // HTML escape function to prevent XSS
       function escapeHtml(unsafe) {
         return String(unsafe)
@@ -1211,11 +1435,157 @@
         }
       });
 
+      // Function to load and display hooks configuration
+      async function loadHooksConfiguration() {
+        try {
+          const response = await fetch('http://localhost:4519/hooks');
+          const hooksData = await response.json();
+
+          const hooksContent = document.getElementById('hooks-content');
+          let html = '';
+          let hasAnyMadameClaudeHooks = false;
+
+          // Process each settings file
+          for (const [filename, hooks] of Object.entries(hooksData)) {
+            const isLocal = filename === 'settings.local.json';
+            const hasMadameClaude = hooks && Object.keys(hooks).some(eventType =>
+              hooks[eventType] && hooks[eventType].some(matcher =>
+                matcher.hooks && matcher.hooks.some(hook =>
+                  hook.command && (hook.command.toLowerCase().includes('madame-claude') || hook.command.toLowerCase().includes('madameclaude'))
+                )
+              )
+            );
+
+            if (hasMadameClaude) {
+              hasAnyMadameClaudeHooks = true;
+            }
+
+            html += `<div class="hooks-file">`;
+            html += `<div class="hooks-file-title">${escapeHtml(filename)}</div>`;
+
+            if (hooks && Object.keys(hooks).length > 0) {
+              // Create table
+              html += `<div class="hooks-table">`;
+
+              // Process each event type (including any custom ones)
+              for (const eventType in hooks) {
+                if (!hooks[eventType] || hooks[eventType].length === 0) continue;
+
+                // Process each matcher
+                for (const matcher of hooks[eventType]) {
+                  // Process each hook
+                  if (matcher.hooks && matcher.hooks.length > 0) {
+                    for (const hook of matcher.hooks) {
+                      if (hook.command) {
+                        html += `<div class="hooks-row">`;
+                        html += `<div class="hooks-cell"><span class="hooks-type ${escapeHtml(eventType)}">${escapeHtml(eventType)}</span></div>`;
+                        html += `<div class="hooks-cell">${escapeHtml(matcher.matcher)}</div>`;
+                        html += `<div class="hooks-cell">${escapeHtml(hook.command)}</div>`;
+                        html += `</div>`;
+                      }
+                    }
+                  }
+                }
+              }
+              html += `</div>`;
+            }
+
+            // Add setup button if Madame Claude hooks are not present
+            if (!hasMadameClaude) {
+              html += `<div class="hooks-file-actions">`;
+              html += `<button class="hooks-btn hooks-btn-setup" onclick="setupHooks(${isLocal})">Add Madame Claude Hooks</button>`;
+
+              // Add "Click here to get started" arrow for local file when no hooks exist anywhere
+              if (isLocal && !hasAnyMadameClaudeHooks) {
+                html += `<div class="getting-started-arrow">`;
+                html += `<div class="getting-started-text">CLICK HERE<br/>TO GET STARTED</div>`;
+                html += `</div>`;
+              }
+
+              html += `</div>`;
+            }
+
+            html += `</div>`;
+          }
+
+          hooksContent.innerHTML = html;
+
+          // Show/hide remove button based on whether any Madame Claude hooks exist
+          const removeSection = document.getElementById('hooks-remove-section');
+          if (hasAnyMadameClaudeHooks) {
+            removeSection.style.display = 'block';
+          } else {
+            removeSection.style.display = 'none';
+          }
+        } catch (error) {
+          console.error('Failed to load hooks configuration:', error);
+          document.getElementById('hooks-content').innerHTML =
+            '<p style="color: #ef4444;">Failed to load hooks configuration</p>';
+        }
+      }
+
       // Connect on load
       connectWebSocket();
 
       // Load settings on page load
       loadSettings();
+
+      // Load hooks configuration on page load
+      loadHooksConfiguration();
+
+      // Setup hooks function
+      async function setupHooks(useLocal) {
+        try {
+          const response = await fetch('http://localhost:4519/hooks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ setup: { local: useLocal } })
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Reload hooks display
+            loadHooksConfiguration();
+
+            // Show success message (you could add a toast notification here)
+            console.log(result.message);
+          } else {
+            console.error('Failed to setup hooks:', result.error);
+          }
+        } catch (error) {
+          console.error('Error setting up hooks:', error);
+        }
+      }
+
+      // Remove all hooks function
+      async function removeHooks() {
+        if (!confirm('Remove all Madame Claude hooks from both settings files?')) {
+          return;
+        }
+
+        try {
+          const response = await fetch('http://localhost:4519/hooks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ setup: {} })
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Reload hooks display
+            loadHooksConfiguration();
+
+            // Show success message
+            console.log(result.message);
+          } else {
+            console.error('Failed to remove hooks:', result.error);
+          }
+        } catch (error) {
+          console.error('Error removing hooks:', error);
+        }
+      }
 
       // Close modal when clicking outside
       document.getElementById('settings-modal').addEventListener('click', (e) => {
