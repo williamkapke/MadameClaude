@@ -405,11 +405,173 @@
         }
       });
 
+      // Function to load and display hooks configuration
+      async function loadHooksConfiguration() {
+        try {
+          const response = await fetch('http://localhost:4519/hooks');
+          const hooksData = await response.json();
+
+          const hooksContent = document.getElementById('hooks-content');
+          let html = '';
+          let hasAnyMadameClaudeHooks = false;
+
+          // First pass: check if any Madame Claude hooks exist
+          for (const [filename, hooks] of Object.entries(hooksData)) {
+            const hasMadameClaude = hooks && Object.keys(hooks).some(eventType =>
+              hooks[eventType] && hooks[eventType].some(matcher =>
+                matcher.hooks && matcher.hooks.some(hook =>
+                  hook.command && (hook.command.toLowerCase().includes('madame-claude') || hook.command.toLowerCase().includes('madameclaude'))
+                )
+              )
+            );
+            if (hasMadameClaude) {
+              hasAnyMadameClaudeHooks = true;
+              break;
+            }
+          }
+
+          // Process each settings file
+          for (const [filename, hooks] of Object.entries(hooksData)) {
+            const isLocal = filename === 'settings.local.json';
+            
+            // Skip settings.local.json for now
+            if (isLocal) continue;
+            
+            const hasMadameClaude = hooks && Object.keys(hooks).some(eventType =>
+              hooks[eventType] && hooks[eventType].some(matcher =>
+                matcher.hooks && matcher.hooks.some(hook =>
+                  hook.command && (hook.command.toLowerCase().includes('madame-claude') || hook.command.toLowerCase().includes('madameclaude'))
+                )
+              )
+            );
+
+
+            html += `<div class="hooks-file">`;
+            html += `<div class="hooks-file-title">${escapeHtml(filename)}</div>`;
+
+            if (hooks && Object.keys(hooks).length > 0) {
+              // Create table
+              html += `<div class="hooks-table">`;
+
+              // Process each event type (including any custom ones)
+              for (const eventType in hooks) {
+                if (!hooks[eventType] || hooks[eventType].length === 0) continue;
+
+                // Process each matcher
+                for (const matcher of hooks[eventType]) {
+                  // Process each hook
+                  if (matcher.hooks && matcher.hooks.length > 0) {
+                    for (const hook of matcher.hooks) {
+                      if (hook.command) {
+                        html += `<div class="hooks-row">`;
+                        html += `<div class="hooks-cell"><span class="hooks-type ${escapeHtml(eventType)}">${escapeHtml(eventType)}</span></div>`;
+                        html += `<div class="hooks-cell">${escapeHtml(matcher.matcher)}</div>`;
+                        html += `<div class="hooks-cell">${escapeHtml(hook.command)}</div>`;
+                        html += `</div>`;
+                      }
+                    }
+                  }
+                }
+              }
+              html += `</div>`;
+            }
+
+            // Add setup button if Madame Claude hooks are not present
+            if (!hasMadameClaude) {
+              html += `<div class="hooks-file-actions">`;
+              html += `<button class="hooks-btn hooks-btn-setup" onclick="setupHooks(${isLocal})">Add Madame Claude Hooks</button>`;
+
+              // Add "Click here to get started" arrow for settings.json when no hooks exist anywhere
+              if (!isLocal && !hasAnyMadameClaudeHooks) {
+                html += `<div class="getting-started-arrow">`;
+                html += `<div class="getting-started-text">CLICK HERE<br/>TO GET STARTED</div>`;
+                html += `</div>`;
+              }
+
+              html += `</div>`;
+            }
+
+            html += `</div>`;
+          }
+
+          hooksContent.innerHTML = html;
+
+          // Show/hide remove button based on whether any Madame Claude hooks exist
+          const removeSection = document.getElementById('hooks-remove-section');
+          if (hasAnyMadameClaudeHooks) {
+            removeSection.style.display = 'block';
+          } else {
+            removeSection.style.display = 'none';
+          }
+        } catch (error) {
+          console.error('Failed to load hooks configuration:', error);
+          document.getElementById('hooks-content').innerHTML =
+            '<p style="color: #ef4444;">Failed to load hooks configuration</p>';
+        }
+      }
+
       // Connect on load
       connectWebSocket();
 
       // Load settings on page load
       loadSettings();
+
+      // Load hooks configuration on page load
+      loadHooksConfiguration();
+
+      // Setup hooks function
+      async function setupHooks(useLocal) {
+        try {
+          const response = await fetch('http://localhost:4519/hooks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ setup: { local: useLocal } })
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Reload hooks display
+            loadHooksConfiguration();
+
+            // Show success message (you could add a toast notification here)
+            console.log(result.message);
+          } else {
+            console.error('Failed to setup hooks:', result.error);
+          }
+        } catch (error) {
+          console.error('Error setting up hooks:', error);
+        }
+      }
+
+      // Remove all hooks function
+      async function removeHooks() {
+        if (!confirm('Remove all Madame Claude hooks from both settings files?')) {
+          return;
+        }
+
+        try {
+          const response = await fetch('http://localhost:4519/hooks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ setup: {} })
+          });
+
+          const result = await response.json();
+
+          if (result.success) {
+            // Reload hooks display
+            loadHooksConfiguration();
+
+            // Show success message
+            console.log(result.message);
+          } else {
+            console.error('Failed to remove hooks:', result.error);
+          }
+        } catch (error) {
+          console.error('Error removing hooks:', error);
+        }
+      }
 
       // Close modal when clicking outside
       document.getElementById('settings-modal').addEventListener('click', (e) => {
