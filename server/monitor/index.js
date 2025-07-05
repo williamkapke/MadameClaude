@@ -59,6 +59,58 @@
         return '-';
       }
 
+      function extractProjectPath(transcriptPath) {
+        if (!transcriptPath) return null;
+        // Extract the escaped project path from transcript path
+        const match = transcriptPath.match(/\/projects\/([^\/]+)\//);
+        if (match && match[1]) {
+          // Convert escaped path back to actual path
+          // "-Users-kap-Documents-Fusion-360" -> "/Users/kap/Documents/Fusion 360"
+          // Create a regex that matches the pattern where - can be any character
+          const escapedPath = match[1];
+          const regexPattern = escapedPath.replace(/-/g, '.');
+          return new RegExp('^(' + regexPattern + ')');
+        }
+        return null;
+      }
+
+      function makeRelativePath(filePath, transcriptPath) {
+        if (!filePath || !transcriptPath) return filePath;
+        
+        const projectPathRegex = extractProjectPath(transcriptPath);
+        if (!projectPathRegex) return filePath;
+        
+        // Try to find a match in the file path
+        const match = filePath.match(projectPathRegex);
+        if (match) {
+          // Return the path relative to the project directory
+          const relativePath = filePath.substring(match[0].length);
+          return relativePath.startsWith('/') ? relativePath.substring(1) : relativePath;
+        }
+        
+        return filePath;
+      }
+
+      function makeRelativePathsInString(str, transcriptPath) {
+        if (!str || !transcriptPath) return str;
+        
+        const projectPathRegex = extractProjectPath(transcriptPath);
+        if (!projectPathRegex) return str;
+        
+        // Create a global version of the regex to find all occurrences
+        const globalRegex = new RegExp(projectPathRegex.source + '[^\\s]*', 'g');
+        
+        return str.replace(globalRegex, (match) => {
+          // Extract just the project path portion
+          const projectMatch = match.match(projectPathRegex);
+          if (projectMatch) {
+            const relativePath = match.substring(projectMatch[0].length);
+            return '.' + (relativePath.startsWith('/') ? relativePath : '/' + relativePath);
+          }
+          return match;
+        });
+      }
+
       // Sound settings
       let soundSettings = {
         notification: {
@@ -227,13 +279,13 @@
         let details = "";
         if (eventData.tool_input) {
           if (eventData.tool_input.command) {
-            details = eventData.tool_input.command;
+            details = makeRelativePathsInString(eventData.tool_input.command, eventData.transcript_path);
           } else if (eventData.tool_input.description) {
             details = eventData.tool_input.description;
           } else if (eventData.tool_input.url) {
             details = eventData.tool_input.url;
           } else if (eventData.tool_input.file_path) {
-            details = eventData.tool_input.file_path;
+            details = makeRelativePath(eventData.tool_input.file_path, eventData.transcript_path);
           }
         } else if (eventData.message) {
           details = eventData.message;
