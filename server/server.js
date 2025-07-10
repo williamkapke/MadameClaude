@@ -131,7 +131,7 @@ const server = http.createServer(async (req, res) => {
       // Read and serve the file
       const encoding = ext === 'mp3' ? null : 'utf8';
       const data = await readFile(actualPath, encoding ? { encoding } : {});
-      res.writeHead(200, { 
+      res.writeHead(200, {
         'Content-Type': contentTypes[ext],
         'Access-Control-Allow-Origin': '*'
       });
@@ -184,9 +184,6 @@ function broadcastMessage(message) {
 
 // Start server
 server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`- Web UI: http://localhost:${PORT}/`);
-  console.log(`- HTTP POST endpoint: http://localhost:${PORT}/`);
-  console.log(`- WebSocket endpoint: ws://localhost:${PORT}/`);
+  console.log(`Open Madame Claude: http://localhost:${PORT}`);
   console.log('Press Ctrl+C to stop');
 });
