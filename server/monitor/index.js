@@ -278,7 +278,29 @@
         // Get details based on event type
         let details = "";
         if (eventData.tool_input) {
-          if (eventData.tool_input.command) {
+          // Check tool-specific fields first
+          if (tool === "Bash" && eventData.tool_input.command) {
+            details = makeRelativePathsInString(eventData.tool_input.command, eventData.transcript_path);
+          } else if (tool === "Grep" && eventData.tool_input.pattern) {
+            // Special handling for Grep tool
+            details = eventData.tool_input.pattern;
+            if (eventData.tool_input.path) {
+              details += " in " + makeRelativePath(eventData.tool_input.path, eventData.transcript_path);
+            }
+            if (eventData.tool_input.glob) {
+              details += " (glob: " + eventData.tool_input.glob + ")";
+            }
+          } else if (tool === "Glob" && eventData.tool_input.pattern) {
+            details = eventData.tool_input.pattern;
+            if (eventData.tool_input.path) {
+              details += " in " + makeRelativePath(eventData.tool_input.path, eventData.transcript_path);
+            }
+          } else if (tool === "LS" && eventData.tool_input.path) {
+            details = makeRelativePath(eventData.tool_input.path, eventData.transcript_path);
+          } else if (tool === "TodoWrite" && eventData.tool_input.todos) {
+            const todoCount = eventData.tool_input.todos.length;
+            details = `${todoCount} todo${todoCount === 1 ? '' : 's'}`;
+          } else if (eventData.tool_input.command) {
             details = makeRelativePathsInString(eventData.tool_input.command, eventData.transcript_path);
           } else if (eventData.tool_input.description) {
             details = eventData.tool_input.description;

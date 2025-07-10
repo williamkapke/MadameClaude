@@ -1,6 +1,6 @@
 {
   "name": "madame-claude",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Monitoring system for Claude Code hooks that captures and streams tool usage events",
   "bin": {
     "madame-claude": "server.js"
